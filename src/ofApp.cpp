@@ -1,5 +1,6 @@
 #include "ofApp.h"
 
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 	myfont = new ofTrueTypeFont;
@@ -14,7 +15,25 @@ void ofApp::setup(){
 	ofSetBackgroundColor(ofColor(0, 0, 0));
 	ofSetColor(ofColor::lightGray);
 
+#ifndef NO_OMX
+	
+	string videoPath = ofToDataPath("../../../video/Timecoded_Big_bunny_1.mov", true);
+	
+	//Somewhat like ofFboSettings we may have a lot of options so this is the current model
+	ofxOMXPlayerSettings settings;
+	settings.videoPath = videoPath;
+	settings.useHDMIForAudio = true;	//default true
+	settings.enableTexture = true;		//default true
+	settings.enableLooping = true;		//default true
+	settings.enableAudio = true;		//default true, save resources by disabling
+	//settings.doFlipTexture = true;		//default false
+	
+	
+	//so either pass in the settings
+	omxPlayer.setup(settings);
 
+#endif
+	
 }
 
 //--------------------------------------------------------------
@@ -54,7 +73,23 @@ void ofApp::draw(){
 	ofSetColor(255);
 	noSmokeImage->draw(10, ofGetViewportHeight() - 120, 100, 80); //scale
 
+#ifndef NO_OMX
 
+
+	if(!omxPlayer.isTextureEnabled())
+	{
+		return;
+	}
+	
+	//omxPlayer.draw(0, 0, ofGetWidth(), ofGetHeight());
+	
+	//draw a smaller version in the lower right
+	int scaledHeight	= omxPlayer.getHeight()/3;
+	int scaledWidth		= omxPlayer.getWidth()/3;
+	omxPlayer.draw(ofGetWidth()-scaledWidth, ofGetHeight()-scaledHeight, scaledWidth, scaledHeight);
+
+#endif
+	
 }
 
 //--------------------------------------------------------------

@@ -2,6 +2,10 @@
 
 #include "ofMain.h"
 
+#ifndef NO_OMX
+#include "ofxOMXPlayer.h"
+#endif
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -28,4 +32,9 @@ class ofApp : public ofBaseApp{
 		ofImage *noSmokeImage;
 		ofImage *da4fidImage;
 
+#ifndef NO_OMX
+                ofxOMXPlayer omxPlayer;
+#endif
+
+		
 };
