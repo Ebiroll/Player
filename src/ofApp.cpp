@@ -17,7 +17,7 @@ void ofApp::setup(){
 
 #ifndef NO_OMX
 	
-	string videoPath = ofToDataPath("../../../video/Timecoded_Big_bunny_1.mov", true);
+	string videoPath = ofToDataPath("/home/pi/Timecoded_Big_bunny_1.mov", true);
 	
 	//Somewhat like ofFboSettings we may have a lot of options so this is the current model
 	ofxOMXPlayerSettings settings;
