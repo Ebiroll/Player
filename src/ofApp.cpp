@@ -9,11 +9,51 @@ void ofApp::setup(){
 	//gui->setFont("AvalonB.ttf", 20);
 
 	qsiImage = new ofImage("Qsi.png");
-	da4fidImage = new ofImage("DA4FID.png");
+	da4fidImage = new ofImage("DA4FID2.png");
 	noSmokeImage = new ofImage("no_smoking.png");
 
 	ofSetBackgroundColor(ofColor(0, 0, 0));
 	ofSetColor(ofColor::lightGray);
+
+	////// Datasources
+	if (!datasourcesXML.load("datasources.xml")) {
+		std::cout << "Unable to load datasources file\n";
+	};
+	datasourcesXML.setTo("properties");
+
+	char Buff[128];
+	int numProps = datasourcesXML.getNumChildren("entry");
+	numProps = 10;
+
+	sprintf(Buff, "entry");
+	//std::cout << Buff;
+	datasourcesXML.setTo(Buff);
+
+	while (datasourcesXML.setToSibling())
+	{
+		// data.url   file:traindata.xml
+		// data2.url /traindata?station=SUND&orig=TRAIN&count=4
+        // data2.root DataList
+        // data2.row schedules
+        // data2.columns platform : tcode : scheduledep : destination
+        // data2.status_attributes status1
+
+		//entry/key
+		std::string value = datasourcesXML.getAttribute("key");
+		if (value == "collector.address") {
+			std::string data = datasourcesXML.getValue();
+			std::cout << value << " " << data << "\r\n";
+		}
+		
+	}
+	//ofXml traindataXML;
+
+	//// Playlist
+	if (!playlistXML.load("playlist.xml")) {
+		std::cout << "Unable to load playlist file\n";
+	};
+	playlistXML.setTo("loop");
+
 
 #ifndef NO_OMX
 	

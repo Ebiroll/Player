@@ -1,6 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
+#define NO_OMX
+
+
 
 #ifndef NO_OMX
 #include "ofxOMXPlayer.h"
@@ -31,6 +34,10 @@ class ofApp : public ofBaseApp{
 
 		ofImage *noSmokeImage;
 		ofImage *da4fidImage;
+
+		ofXml datasourcesXML;
+		ofXml traindataXML;
+		ofXml playlistXML;
 
 #ifndef NO_OMX
                 ofxOMXPlayer omxPlayer;
