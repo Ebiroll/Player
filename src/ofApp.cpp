@@ -1,4 +1,5 @@
 #include "ofApp.h"
+#include "ofxTextLabel.h"
 
 
 //--------------------------------------------------------------
@@ -6,6 +7,7 @@ void ofApp::setup(){
 	myfont = new ofTrueTypeFont;
 	//myfont->loadFont(OF_TTF_SANS, 20);
 	myfont->loadFont("AvalonB.ttf", 40);
+	font.loadFont("AvalonB.ttf", 40);
 	//gui->setFont("AvalonB.ttf", 20);
 
 	qsiImage = new ofImage("Qsi.png");
@@ -31,12 +33,12 @@ void ofApp::setup(){
 
 	while (datasourcesXML.setToSibling())
 	{
-		// data.url   file:traindata.xml
-		// data2.url /traindata?station=SUND&orig=TRAIN&count=4
-        // data2.root DataList
-        // data2.row schedules
-        // data2.columns platform : tcode : scheduledep : destination
-        // data2.status_attributes status1
+           // data.url   file:traindata.xml
+           // data2.url /traindata?station=SUND&orig=TRAIN&count=4
+           // data2.root DataList
+           // data2.row schedules
+           // data2.columns platform : tcode : scheduledep : destination
+           // data2.status_attributes status1
 
 		//entry/key
 		std::string value = datasourcesXML.getAttribute("key");
@@ -55,6 +57,11 @@ void ofApp::setup(){
 	playlistXML.setTo("loop");
 
 
+       float frameWidth = 600;
+       float frameHeight = 400;
+       frameBounds.set((ofGetWidth() - frameWidth) / 2.0f, (ofGetHeight() - frameHeight) / 2.0f, frameWidth, frameHeight);
+       lineSpacing = 1.0f;
+
 #ifndef NO_OMX
 	
 	string videoPath = ofToDataPath("/home/pi/Timecoded_Big_bunny_1.mov", true);
@@ -66,7 +73,7 @@ void ofApp::setup(){
 	settings.enableTexture = true;		//default true
 	settings.enableLooping = true;		//default true
 	settings.enableAudio = true;		//default true, save resources by disabling
-	//settings.doFlipTexture = true;		//default false
+	//settings.doFlipTexture = true;	//default false
 	
 	
 	//so either pass in the settings
@@ -129,12 +136,45 @@ void ofApp::draw(){
 	omxPlayer.draw(ofGetWidth()-scaledWidth, ofGetHeight()-scaledHeight, scaledWidth, scaledHeight);
 
 #endif
+
+	std::string sampleText = "Here is some sample text:\nThe quick brown fox jumped over the lazy dog.";
+
+ofRectangle textBounds;
+    vector<string> textLines;
+
+
+    ofxTextLabel::drawString(font, sampleText, frameBounds, textLines, textBounds, lineSpacing, alignHorz, alignVert);
 	
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+   switch (key) {
+        case 'h':
+            if (alignHorz == OF_ALIGN_HORZ_LEFT) alignHorz = OF_ALIGN_HORZ_CENTER;
+            else if (alignHorz == OF_ALIGN_HORZ_CENTER) alignHorz = OF_ALIGN_HORZ_RIGHT;
+            else alignHorz = OF_ALIGN_HORZ_LEFT;
+            break;
+            
+        case 'v':
+            if (alignVert == OF_ALIGN_VERT_TOP) alignVert = OF_ALIGN_VERT_CENTER;
+            else if (alignVert == OF_ALIGN_VERT_CENTER) alignVert = OF_ALIGN_VERT_BOTTOM;
+            else alignVert = OF_ALIGN_VERT_TOP;
+            break;
+            
+        case 'l':
+            lineSpacing += 0.1f;
+            if (lineSpacing > 2.0f) lineSpacing = 0.2f;
+            break;
+            
+        case 'f':
+            frameBounds.width += 50;
+            if (frameBounds.width > 800) frameBounds.width = 100;
+            break;
+            
+        default:
+            break;
+    }
 }
 
 //--------------------------------------------------------------

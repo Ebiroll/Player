@@ -43,5 +43,12 @@ class ofApp : public ofBaseApp{
                 ofxOMXPlayer omxPlayer;
 #endif
 
+		std::string root;
+		std::vector<std::string> columns;
+		ofRectangle frameBounds;
+                float lineSpacing;
 		
+		ofTrueTypeFont font;
+                ofAlignHorz alignHorz;
+                ofAlignVert alignVert;
 };
