@@ -203,6 +203,8 @@ S:\work\of_v0.9.3_vs_release\addons\ofxAssimpModelLoader\libs\assimp\lib\vs\x64\
     <ClCompile Include="src\ofApp.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\ofxHttpUtils.cpp" />
+    <ClCompile Include="src\ofxTextLabel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\of_v0.9.3_vs_release\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\ai_assert.h" />

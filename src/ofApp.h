@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
-#define NO_OMX
+#include "ofxHttpUtils.h"
 
+#define NO_OMX
 
 
 #ifndef NO_OMX
@@ -28,6 +29,11 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
+		// Here we get the response
+		void newResponse(ofxHttpResponse & response);
+
+		ofxHttpUtils httpUtils;
+
 
 		ofTrueTypeFont *myfont;
 		ofImage *qsiImage;

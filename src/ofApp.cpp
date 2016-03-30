@@ -137,7 +137,7 @@ void ofApp::draw(){
 
 #endif
 
-	std::string sampleText = "Here is some sample text:\nThe quick brown fox jumped over the lazy dog.";
+	std::string sampleText = "Here is some sample text:\nThe quick brown fox jumped over the lazy dog.\nThe End";
 
 ofRectangle textBounds;
     vector<string> textLines;
@@ -145,6 +145,13 @@ ofRectangle textBounds;
 
     ofxTextLabel::drawString(font, sampleText, frameBounds, textLines, textBounds, lineSpacing, alignHorz, alignVert);
 	
+}
+
+//--------------------------------------------------------------
+
+void ofApp::newResponse(ofxHttpResponse & response) {
+	string responseStr = ofToString(response.status) + ": " + (string)response.responseBody;
+	std::cout << responseStr;
 }
 
 //--------------------------------------------------------------
@@ -171,6 +178,18 @@ void ofApp::keyPressed(int key){
             frameBounds.width += 50;
             if (frameBounds.width > 800) frameBounds.width = 100;
             break;
+		case 'r':
+		    {
+			   ofxHttpForm form;
+			   form.action = "http://localhost/of-test/upload.php";
+			   form.method = OFX_HTTP_POST;
+			   //form.addFormField("number", ofToString(counter));
+			   //form.addFile("file", "ofw-logo.gif");
+			   httpUtils.addForm(form);
+			   //requestStr = "message sent: " + ofToString(counter);
+			   //counter++;
+		    }
+			break;
             
         default:
             break;
