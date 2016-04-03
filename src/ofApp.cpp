@@ -65,8 +65,41 @@ void ofApp::setup(){
 	//// Playlist
 	if (!playlistXML.load("playlist.xml")) {
 		std::cout << "Unable to load playlist file\n";
-	};
-	playlistXML.setTo("loop");
+	}
+	else
+	{
+		playlistXML.setTo("loop");
+		playlistXML.setTo("item");
+		std::string value = datasourcesXML.getAttribute("name");
+		ofFile file(value);
+		files.push_back(file);
+		std::string full = datasourcesXML.getAttribute("fullscreen");
+
+		if (full == "true") {
+			fullScreen.push_back(true);
+		}
+		else
+		{
+			fullScreen.push_back(false);
+		}
+
+		while (playlistXML.setToSibling()) {
+			std::string value = datasourcesXML.getAttribute("name");
+			ofFile file(value);
+			files.push_back(file);
+			std::string full = datasourcesXML.getAttribute("fullscreen");
+
+			if (full == "true") {
+				fullScreen.push_back(true);
+			}
+			else
+			{
+				fullScreen.push_back(false);
+			}
+		}
+	}
+
+  	   // /da4rid/viewer/adverts/
 
 
        float frameWidth = 600;
@@ -76,6 +109,11 @@ void ofApp::setup(){
 
 	   ofAddListener(httpUtils.newResponseEvent, this, &ofApp::newResponse);
 	   httpUtils.start();
+
+	   ofAddListener(httpUtils.newResponseEvent, this, &ofApp::videoResponse);
+	   videoHttpUtils.start();
+
+
 #ifndef NO_OMX
 	
 	string videoPath = ofToDataPath("/home/pi/Timecoded_Big_bunny_1.mov", true);
@@ -83,6 +121,7 @@ void ofApp::setup(){
 	//Somewhat like ofFboSettings we may have a lot of options so this is the current model
 	ofxOMXPlayerSettings settings;
 	settings.videoPath = videoPath;
+	settings.listener = this;
 	settings.useHDMIForAudio = true;	//default true
 	settings.enableTexture = true;		//default true
 	settings.enableLooping = true;		//default true
@@ -190,10 +229,42 @@ void ofApp::draw(){
 
 }
 
+#ifndef NO_OMX
+
+
+bool doLoadNextMovie = false;
+void ofApp::onVideoEnd(ofxOMXPlayerListenerEventData& e)
+{
+	ofLogVerbose(__func__) << " RECEIVED";
+	doLoadNextMovie = true;
+}
+
+
+void ofApp::loadNextMovie()
+{
+	if (videoCounter + 1<files.size())
+	{
+		videoCounter++;
+	}
+	else
+	{
+		videoCounter = 0;
+	}
+	omxPlayer.loadMovie(files[videoCounter].path());
+	doLoadNextMovie = false;
+}
+
+#endif
+
+void ofApp::videoResponse(ofxHttpResponse & response) {
+	// Video response
+	// One file per line???
+}
+
 
 void ofApp::newResponse(ofxHttpResponse & response) {
 	string responseStr = ofToString(response.status) + ": " + (string)response.responseBody;
-	std::cout << responseStr;
+	//std::cout << responseStr;
 	//printf("%s\n", response.responseBody.c_str());
 
 	if (XML.loadFromBuffer(response.responseBody))
@@ -211,10 +282,18 @@ void ofApp::newResponse(ofxHttpResponse & response) {
 		// iterate through <entry> tags
 		//XML.setTo("Bus"); 
 		XML.setTo(row);
+		string value = XML.getValue("Destination");
+		string dt = XML.getValue("DisplayTime");
+		string total = value + string("\r   ") + dt;
+		linesForDisplay.push_back(total);
+
 
 		while (XML.setToSibling()) {
-			string value = XML.getValue("destination");
-			linesForDisplay.push_back(value);
+			value = XML.getValue("Destination");
+			 dt = XML.getValue("DisplayTime");
+			 total = value + string("\r   ") + dt;
+
+			linesForDisplay.push_back(total);
 			printf("%s\n", value.c_str());
 			//printf("%s\n", XML.getValue("entry:published", "", i).c_str());
 		}
@@ -249,8 +328,8 @@ void ofApp::keyPressed(int key){
 		case 'r':
 		    {
 			   ofxHttpForm form;
-			   form.action = url;
-			   //form.action = "http://localhost/of-test/upload.php";
+			   //form.action = url;
+			   form.action = "http://api.sl.se/api2/realtimedepartures.xml?key=245e126ccbf0451cbca8d3fcc428b0b9&siteid=9702&timewindow=20";
 			   form.method = OFX_HTTP_GET;
 			   httpUtils.addForm(form);
 			   //requestStr = "message sent: " + ofToString(counter);

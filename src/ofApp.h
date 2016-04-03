@@ -5,14 +5,18 @@
 #include "ofxTrueTypeFontUC.h"
 
 
-//#define NO_OMX
+#define NO_OMX
 
 
 #ifndef NO_OMX
 #include "ofxOMXPlayer.h"
 #endif
 
-class ofApp : public ofBaseApp{
+class ofApp : public ofBaseApp 
+#ifndef NO_OMX
+	public ofxOMXPlayerListener
+#endif
+{
 
 	public:
 		void setup();
@@ -30,11 +34,20 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-		
-		// Here we get the response
+
+#ifndef NO_OMX
+		void onVideoEnd(ofxOMXPlayerListenerEventData& e);
+		void onVideoLoop(ofxOMXPlayerListenerEventData& e) { /*empty*/ };
+		void loadNextMovie();
+
+#endif
+
+		// Here we get the response for the data xml.
 		void newResponse(ofxHttpResponse & response);
+		void videoResponse(ofxHttpResponse & response);
 
 		ofxHttpUtils httpUtils;
+		ofxHttpUtils videoHttpUtils;
 
 		ofxTrueTypeFontUC ucFont;
 		ofTrueTypeFont *myfont;
@@ -51,13 +64,18 @@ class ofApp : public ofBaseApp{
         ofxOMXPlayer omxPlayer;
 #endif
 
+		// Video loop
+		vector<ofFile> files;
+		vector<bool> fullScreen;
+		int videoCounter;
+
+
         ofXml XML;
 		std::string url;
         std::string root;
 		std::string row;
 
         std::vector<std::string> columns;
-
 		std::vector<std::string> linesForDisplay;
 
 
