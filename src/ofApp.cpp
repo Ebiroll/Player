@@ -133,7 +133,7 @@ void ofApp::draw(){
 
 	da4fidImage->draw(10, 10, 100, 100); //scale
 
-	int width = 1 * ofGetViewportWidth() / 3;
+	int width = 0.9 * ofGetViewportWidth() / 3;
 	int height = ofGetViewportHeight() / 8;
 
 	ofSetColor(ofColor::lightGray);
@@ -177,7 +177,7 @@ void ofApp::draw(){
 	//draw a smaller version in the lower right
 	int scaledHeight	= 2*omxPlayer.getHeight()/3;
 	int scaledWidth		= 2*omxPlayer.getWidth()/3;
-	omxPlayer.draw(ofGetWidth()-scaledWidth, ofGetHeight()-scaledHeight, scaledWidth, scaledHeight);
+	omxPlayer.draw(ofGetWidth()-scaledWidth, 160, scaledWidth, scaledHeight);
 
 #endif
 

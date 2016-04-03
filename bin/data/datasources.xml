@@ -20,7 +20,7 @@
 <entry key="data.interval">15</entry>
 
 
-<entry key="data2.url">/traindata?station=SUND&amp;orig=TRAIN&amp;count=4</entry>
+<entry key="data2.url">file:data/traindata.xml</entry>
 <entry key="data2.root">DataList</entry>
 <entry key="data2.row">schedules</entry>
 <entry key="data2.columns">platform:tcode:scheduledep:destination</entry>
