@@ -2,6 +2,8 @@
 
 #include "ofMain.h"
 #include "ofxHttpUtils.h"
+#include "ofxTrueTypeFontUC.h"
+
 
 #define NO_OMX
 
@@ -34,7 +36,7 @@ class ofApp : public ofBaseApp{
 
 		ofxHttpUtils httpUtils;
 
-
+		ofxTrueTypeFontUC ucFont;
 		ofTrueTypeFont *myfont;
 		ofImage *qsiImage;
 
@@ -46,15 +48,23 @@ class ofApp : public ofBaseApp{
 		ofXml playlistXML;
 
 #ifndef NO_OMX
-                ofxOMXPlayer omxPlayer;
+        ofxOMXPlayer omxPlayer;
 #endif
 
-		std::string root;
-		std::vector<std::string> columns;
-		ofRectangle frameBounds;
-                float lineSpacing;
+        ofXml XML;
+		std::string url;
+        std::string root;
+		std::string row;
+
+        std::vector<std::string> columns;
+
+		std::vector<std::string> linesForDisplay;
+
+
+        ofRectangle frameBounds;
+        float lineSpacing;
 		
-		ofTrueTypeFont font;
-                ofAlignHorz alignHorz;
-                ofAlignVert alignVert;
+        ofTrueTypeFont font;
+        ofAlignHorz alignHorz;
+        ofAlignVert alignVert;
 };

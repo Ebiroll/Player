@@ -1,10 +1,10 @@
-#include "ofApp.h"
+﻿#include "ofApp.h"
 #include "ofxTextLabel.h"
-
 
 //--------------------------------------------------------------
 void ofApp::setup(){
 	myfont = new ofTrueTypeFont;
+	ucFont.loadFont("AvalonB.ttf", 20, true, true);
 	//myfont->loadFont(OF_TTF_SANS, 20);
 	myfont->loadFont("AvalonB.ttf", 40);
 	font.loadFont("AvalonB.ttf", 40);
@@ -46,7 +46,19 @@ void ofApp::setup(){
 			std::string data = datasourcesXML.getValue();
 			std::cout << value << " " << data << "\r\n";
 		}
-		
+		if (value == "data2.url") {
+			url = datasourcesXML.getValue();
+			std::cout << "url:" << url << "\r\n";
+		}
+		if (value == "data2.root") {
+			root = datasourcesXML.getValue();
+			std::cout << "root:" << root << "\r\n";
+		}
+		if (value == "data2.row") {
+			row = datasourcesXML.getValue();
+			std::cout << "row:" << row << "\r\n";
+		}
+
 	}
 	//ofXml traindataXML;
 
@@ -62,6 +74,8 @@ void ofApp::setup(){
        frameBounds.set((ofGetWidth() - frameWidth) / 2.0f, (ofGetHeight() - frameHeight) / 2.0f, frameWidth, frameHeight);
        lineSpacing = 1.0f;
 
+	   ofAddListener(httpUtils.newResponseEvent, this, &ofApp::newResponse);
+	   httpUtils.start();
 #ifndef NO_OMX
 	
 	string videoPath = ofToDataPath("/home/pi/Timecoded_Big_bunny_1.mov", true);
@@ -81,6 +95,29 @@ void ofApp::setup(){
 
 #endif
 	
+	if (strncmp(url.c_str(), "file:",5)==0) {
+		ofxHttpResponse fake;
+		string filename = url.substr(5);
+		std::cout << "Opening " << filename << std::endl;
+
+		std::ifstream file(filename.c_str());
+		string content;
+
+		istreambuf_iterator<char> inputIt(file), emptyInputIt;
+		back_insert_iterator<string> stringInsert(content);
+
+		copy(inputIt, emptyInputIt, stringInsert);
+  	    //std::cout << content;
+		fake.responseBody = content;
+		newResponse(fake);
+    }
+	else 
+	{
+		ofxHttpForm form;
+		form.action = url;
+		form.method = OFX_HTTP_GET;
+		httpUtils.addForm(form);
+	}
 }
 
 //--------------------------------------------------------------
@@ -92,26 +129,33 @@ void ofApp::update(){
 void ofApp::draw(){
 	//ofDrawBitmapString("Hello World", 10, 10);
 	myfont->drawString("Hang Nadim Batam Airport", 250, 50);
-
 	ofSetColor(255);
-
 
 	da4fidImage->draw(10, 10, 100, 100); //scale
 
-	ofSetColor(ofColor::lightGray);
-
-	ofDrawRectRounded(10, 160, 300, 100, 10);
-
-	ofSetColor(ofColor(40, 40, 40));
-
-	ofDrawRectRounded(10, 280, 300, 100, 10);
+	int width = 1 * ofGetViewportWidth() / 3;
+	int height = ofGetViewportHeight() / 8;
 
 	ofSetColor(ofColor::lightGray);
+	//string  test = string("Västerhaninge");
+	//linesForDisplay.push_back(test);
 
-	ofDrawRectRounded(10, 400, 300, 100, 10);
+	for (int j = 0; j < 5; j++) {
+		if (j % 2 == 0) {
+			ofSetColor(ofColor(40, 40, 40));
+		}
+		else
+		{
+			ofSetColor(ofColor::lightGray);
+		}
 
+		if (linesForDisplay.size() > j) {
+			ofDrawRectRounded(10, 160 + height * j , width, height, 10);
+			ofSetColor(255);
+			ucFont.drawString(linesForDisplay[j], 60, 190 + height * j);
+		}
+	}
 
-	ofSetColor(ofColor::lightGray);
 	//int position = (ofGetFrameNum()  30);
 	int position = ofGetViewportWidth() - ofGetFrameNum();
 
@@ -131,27 +175,51 @@ void ofApp::draw(){
 	//omxPlayer.draw(0, 0, ofGetWidth(), ofGetHeight());
 	
 	//draw a smaller version in the lower right
-	int scaledHeight	= omxPlayer.getHeight()/3;
-	int scaledWidth		= omxPlayer.getWidth()/3;
+	int scaledHeight	= 2*omxPlayer.getHeight()/3;
+	int scaledWidth		= 2*omxPlayer.getWidth()/3;
 	omxPlayer.draw(ofGetWidth()-scaledWidth, ofGetHeight()-scaledHeight, scaledWidth, scaledHeight);
 
 #endif
 
-	std::string sampleText = "Here is some sample text:\nThe quick brown fox jumped over the lazy dog.\nThe End";
+	//std::string sampleText = "Here is some sample text:\nUnicode åäö ÅÄÖ The quick brown fox jumped over the lazy dog.\nThe End";
+    //ofRectangle textBounds;
+    //vector<string> textLines;
+    //ofxTextLabel::drawString(font, sampleText, frameBounds, textLines, textBounds, lineSpacing, alignHorz, alignVert);
+	//ucFont.drawString("ÅÄÖ åäö", 100, 200);
 
-ofRectangle textBounds;
-    vector<string> textLines;
 
-
-    ofxTextLabel::drawString(font, sampleText, frameBounds, textLines, textBounds, lineSpacing, alignHorz, alignVert);
-	
 }
 
-//--------------------------------------------------------------
 
 void ofApp::newResponse(ofxHttpResponse & response) {
 	string responseStr = ofToString(response.status) + ": " + (string)response.responseBody;
 	std::cout << responseStr;
+	//printf("%s\n", response.responseBody.c_str());
+
+	if (XML.loadFromBuffer(response.responseBody))
+	{
+		//XML.setTo("ResponseOfDepartures"); // change relative root to <feed>
+		//XML.setTo("ResponseData"); // change relative root to <feed>
+		//XML.setTo("Trains");
+		//XML.setTo("//ResponseOfDepartures[0]//ResponseData[0]//Trains");
+		//XML.setTo("//ResponseOfDepartures//ResponseData//Trains");
+		XML.setTo(root);
+		//XML.setTo("//ResponseOfDepartures//ResponseData//Buses");
+
+
+		//int numEntries = XML.getNumChildren("Train");
+		// iterate through <entry> tags
+		//XML.setTo("Bus"); 
+		XML.setTo(row);
+
+		while (XML.setToSibling()) {
+			string value = XML.getValue("destination");
+			linesForDisplay.push_back(value);
+			printf("%s\n", value.c_str());
+			//printf("%s\n", XML.getValue("entry:published", "", i).c_str());
+		}
+
+	}
 }
 
 //--------------------------------------------------------------
@@ -181,13 +249,11 @@ void ofApp::keyPressed(int key){
 		case 'r':
 		    {
 			   ofxHttpForm form;
-			   form.action = "http://localhost/of-test/upload.php";
-			   form.method = OFX_HTTP_POST;
-			   //form.addFormField("number", ofToString(counter));
-			   //form.addFile("file", "ofw-logo.gif");
+			   form.action = url;
+			   //form.action = "http://localhost/of-test/upload.php";
+			   form.method = OFX_HTTP_GET;
 			   httpUtils.addForm(form);
 			   //requestStr = "message sent: " + ofToString(counter);
-			   //counter++;
 		    }
 			break;
             
