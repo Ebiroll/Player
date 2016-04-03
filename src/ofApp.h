@@ -14,7 +14,7 @@
 
 class ofApp : public ofBaseApp 
 #ifndef NO_OMX
-	public ofxOMXPlayerListener
+ , public ofxOMXPlayerListener
 #endif
 {
 

@@ -1,6 +1,8 @@
 ﻿#include "ofApp.h"
 #include "ofxTextLabel.h"
 
+bool doLoadNextMovie = false;
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 	myfont = new ofTrueTypeFont;
@@ -68,12 +70,17 @@ void ofApp::setup(){
 	}
 	else
 	{
+		std::cout << "Loaded playlist file!!!!!!!!!!!!!\n";
+	  
 		playlistXML.setTo("loop");
 		playlistXML.setTo("item");
-		std::string value = datasourcesXML.getAttribute("name");
+		playlistXML.setTo("media");
+		std::string value = playlistXML.getAttribute("name");
+		std::cout << "value" << value << std::endl;
+		
 		ofFile file(value);
 		files.push_back(file);
-		std::string full = datasourcesXML.getAttribute("fullscreen");
+		std::string full = playlistXML.getAttribute("fullscreen");
 
 		if (full == "true") {
 			fullScreen.push_back(true);
@@ -83,11 +90,15 @@ void ofApp::setup(){
 			fullScreen.push_back(false);
 		}
 
+		playlistXML.setToParent();
 		while (playlistXML.setToSibling()) {
-			std::string value = datasourcesXML.getAttribute("name");
+	  		playlistXML.setTo("media");
+			std::string value = playlistXML.getAttribute("name");
 			ofFile file(value);
+			//std::cout << value;
+			
 			files.push_back(file);
-			std::string full = datasourcesXML.getAttribute("fullscreen");
+			std::string full = playlistXML.getAttribute("fullscreen");
 
 			if (full == "true") {
 				fullScreen.push_back(true);
@@ -96,6 +107,7 @@ void ofApp::setup(){
 			{
 				fullScreen.push_back(false);
 			}
+			playlistXML.setToParent();
 		}
 	}
 
@@ -120,12 +132,14 @@ void ofApp::setup(){
 	
 	//Somewhat like ofFboSettings we may have a lot of options so this is the current model
 	ofxOMXPlayerSettings settings;
-	settings.videoPath = videoPath;
+	settings.videoPath = files[videoCounter].path(); //videoPath;
+        cout << "Load--------" << settings.videoPath << std::endl;
+	
 	settings.listener = this;
 	settings.useHDMIForAudio = true;	//default true
 	settings.enableTexture = true;		//default true
-	settings.enableLooping = true;		//default true
-	settings.enableAudio = true;		//default true, save resources by disabling
+	settings.enableLooping = false;		//default true	
+	settings.enableAudio = false;		//default true, save resources by disabling
 	//settings.doFlipTexture = true;	//default false
 	
 	
@@ -161,7 +175,20 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
+#ifndef NO_OMX
+	if (doLoadNextMovie) 
+	{
+		ofLogVerbose(__func__) << "doing reload";
+		
+		if(omxPlayer.isTextureEnabled())
+		{
+			//clear the texture if you want
+			//omxPlayer.getTextureReference().clear();
+		}
+		//with the texture based player this must be done here - especially if the videos are different resolutions
+		loadNextMovie();
+	}
+#endif
 }
 
 //--------------------------------------------------------------
@@ -232,7 +259,7 @@ void ofApp::draw(){
 #ifndef NO_OMX
 
 
-bool doLoadNextMovie = false;
+
 void ofApp::onVideoEnd(ofxOMXPlayerListenerEventData& e)
 {
 	ofLogVerbose(__func__) << " RECEIVED";
