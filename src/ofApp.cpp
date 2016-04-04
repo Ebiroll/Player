@@ -17,6 +17,7 @@ void ofApp::setup(){
 	noSmokeImage = new ofImage("no_smoking.png");
 
 	ofSetBackgroundColor(ofColor(0, 0, 0));
+	//ofSetBackgroundAuto(false);
 	ofSetColor(ofColor::lightGray);
 
 	////// Datasources
@@ -194,6 +195,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 	//ofDrawBitmapString("Hello World", 10, 10);
+        //static int times=0;
 	myfont->drawString("Hang Nadim Batam Airport", 250, 50);
 	ofSetColor(255);
 
@@ -202,24 +204,28 @@ void ofApp::draw(){
 	int width = 0.9 * ofGetViewportWidth() / 3;
 	int height = ofGetViewportHeight() / 8;
 
-	ofSetColor(ofColor::lightGray);
-	//string  test = string("Västerhaninge");
-	//linesForDisplay.push_back(test);
 
-	for (int j = 0; j < 5; j++) {
-		if (j % 2 == 0) {
-			ofSetColor(ofColor(40, 40, 40));
-		}
-		else
-		{
-			ofSetColor(ofColor::lightGray);
-		}
+	if (!fullScreen[videoCounter])
+	{
+	  ofSetColor(ofColor::lightGray);
+	  //string  test = string("Västerhaninge");
+	  //linesForDisplay.push_back(test);
 
-		if (linesForDisplay.size() > j) {
-			ofDrawRectRounded(10, 160 + height * j , width, height, 10);
-			ofSetColor(255);
-			ucFont.drawString(linesForDisplay[j], 60, 190 + height * j);
-		}
+	  for (int j = 0; j < 5; j++) {
+	    if (j % 2 == 0) {
+	      ofSetColor(ofColor(40, 40, 40));
+	    }
+	    else
+	    {
+	      ofSetColor(ofColor::lightGray);
+	    }
+
+	    if (linesForDisplay.size() > j) {
+	      ofDrawRectRounded(10, 160 + height * j , width, height, 10);
+	      ofSetColor(255);
+	      ucFont.drawString(linesForDisplay[j], 60, 190 + height * j);
+	    }
+	  }
 	}
 
 	//int position = (ofGetFrameNum()  30);
@@ -243,7 +249,14 @@ void ofApp::draw(){
 	//draw a smaller version in the lower right
 	int scaledHeight	= 2*omxPlayer.getHeight()/3;
 	int scaledWidth		= 2*omxPlayer.getWidth()/3;
-	omxPlayer.draw(ofGetWidth()-scaledWidth, 160, scaledWidth, scaledHeight);
+
+	if (fullScreen[videoCounter])
+        {
+            omxPlayer.draw(0,0,ofGetWidth(), ofGetHeight());
+	} else
+        {
+            omxPlayer.draw(ofGetWidth()-scaledWidth, 160, scaledWidth, scaledHeight);	  	  
+	}
 
 #endif
 
@@ -311,14 +324,14 @@ void ofApp::newResponse(ofxHttpResponse & response) {
 		XML.setTo(row);
 		string value = XML.getValue("Destination");
 		string dt = XML.getValue("DisplayTime");
-		string total = value + string("\r   ") + dt;
+		string total = value + string("\n    ") + dt;
 		linesForDisplay.push_back(total);
 
 
 		while (XML.setToSibling()) {
 			value = XML.getValue("Destination");
 			 dt = XML.getValue("DisplayTime");
-			 total = value + string("\r   ") + dt;
+			 total = value + string("\n   ") + dt;
 
 			linesForDisplay.push_back(total);
 			printf("%s\n", value.c_str());
