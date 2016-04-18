@@ -12,6 +12,11 @@ void ofApp::setup(){
 	font.loadFont("AvalonB.ttf", 40);
 	//gui->setFont("AvalonB.ttf", 20);
 
+	ofRectangle bound(280,20,300,20);
+	
+	scrollText.setup(myfont,"Hello FBO Font",14);
+
+	
 	qsiImage = new ofImage("Qsi.png");
 	da4fidImage = new ofImage("DA4FID2.png");
 	noSmokeImage = new ofImage("no_smoking.png");
@@ -198,24 +203,9 @@ void ofApp::update(){
 		loadNextMovie();
 	}
 #endif
-}
-
-//--------------------------------------------------------------
-void ofApp::draw(){
-	//ofDrawBitmapString("Hello World", 10, 10);
-        //static int times=0;
-	myfont->drawString("Hang Nadim Batam Airport", 250, 50);
-	ofSetColor(255);
-
-	da4fidImage->draw(10, 10, 100, 100); //scale
-
-	int width = 0.9 * ofGetViewportWidth() / 3;
-	int height = ofGetViewportHeight() / 8;
-	wWidth=ofGetViewportWidth();
-	wHeight=ofGetViewportHeight();
-
-
-   if (textDataUpdated) {
+	   if (textDataUpdated) {
+	     	int width = 0.9 * ofGetViewportWidth() / 3;
+         	int height = ofGetViewportHeight() / 8;
     _fbo.begin();
     {
         //ofClear(_clearColor.r, _clearColor.g, _clearColor.b, 0);
@@ -256,6 +246,23 @@ void ofApp::draw(){
 
 	textDataUpdated=false;   
    }
+}
+
+//--------------------------------------------------------------
+void ofApp::draw(){
+	//ofDrawBitmapString("Hello World", 10, 10);
+        //static int times=0;
+	myfont->drawString("Hang Nadim Batam Airport", 250, 50);
+	ofSetColor(255);
+
+	da4fidImage->draw(10, 20, 100, 100); //scale
+
+	int width = 0.9 * ofGetViewportWidth() / 3;
+	int height = ofGetViewportHeight() / 8;
+	wWidth=ofGetViewportWidth();
+	wHeight=ofGetViewportHeight();	
+
+
 
 	if (!fullScreen[videoCounter])
 	{
@@ -282,6 +289,9 @@ void ofApp::draw(){
 #endif
 	}
 
+
+        scrollText.draw();
+	
 	//int position = (ofGetFrameNum()  30);
 	int position = ofGetViewportWidth() - ofGetFrameNum();
 
@@ -311,6 +321,7 @@ void ofApp::draw(){
         {
             omxPlayer.draw(ofGetWidth()-scaledWidth, 160, scaledWidth, scaledHeight);	  	  
 	}
+
 
 #endif
 

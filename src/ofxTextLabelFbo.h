@@ -5,7 +5,7 @@
 //  Created by Elie Zananiri on 1/23/15.
 //
 //
-#if 0
+
 
 #pragma once
 
@@ -58,6 +58,5 @@ typedef ofxTextLabelFbo_<ofTrueTypeFont> ofxTextLabelFbo;
 
 // Include the cpp so that we can use the template with non-core font types.
 // Make sure not to include the cpp in the target sources!
-#include "ofxTextLabelFbo.cpp"
+//#include "ofxTextLabelFbo.cpp"
 
-#endif

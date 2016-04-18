@@ -5,9 +5,33 @@
 //  Created by Elie Zananiri on 1/23/15.
 //
 //
-#if 0
+
 
 #include "ofxTextLabelFbo.h"
+
+
+//typedef ofxTextLabelFbo_<ofTrueTypeFont
+//> ofxTextLabelFbo;
+
+template<>
+ofxTextLabelFbo_<ofTrueTypeFont>::ofxTextLabelFbo_()
+: ofxTextLabel_<ofTrueTypeFont>()
+{
+    
+}
+
+template<>
+void ofxTextLabelFbo_<ofTrueTypeFont>::draw()
+{
+    _fbo.draw(0, 0);
+}
+
+template<>
+ofxTextLabelFbo_<ofTrueTypeFont>::~ofxTextLabelFbo_()
+{
+    
+}
+
 
 //--------------------------------------------------------------
 template<typename T>
@@ -126,4 +150,3 @@ void ofxTextLabelFbo_<T>::setClearColor(const ofColor &clearColor)
     }
 }
 
-#endif

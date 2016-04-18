@@ -3,9 +3,10 @@
 #include "ofMain.h"
 #include "ofxHttpUtils.h"
 #include "ofxTrueTypeFontUC.h"
+#include "ofxTextLabelFbo.h"
 
 
-#define NO_OMX
+//#define NO_OMX
 
 
 #ifndef NO_OMX
@@ -71,12 +72,12 @@ class ofApp : public ofBaseApp
 
 
         ofXml XML;
-		std::string url;
+	std::string url;
         std::string root;
-		std::string row;
+	std::string row;
 
         std::vector<std::string> columns;
-		std::vector<std::string> linesForDisplay;
+	std::vector<std::string> linesForDisplay;
 
 
         ofRectangle frameBounds;
@@ -86,13 +87,15 @@ class ofApp : public ofBaseApp
         ofAlignHorz alignHorz;
         ofAlignVert alignVert;
 		
-		int wWidth;
-		int wHeight;
+	int wWidth;
+	int wHeight;
+	
+	bool textDataUpdated;
 		
-		bool textDataUpdated;
-		
-		// Use FBO to draw textlist
+	// Use FBO to draw textlist
         ofFbo _fbo;
         ofFbo::Settings _fboSettings;
         ofColor _clearColor;
+
+	ofxTextLabelFbo scrollText;
 };
