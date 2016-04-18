@@ -219,12 +219,13 @@ void ofApp::draw(){
     _fbo.begin();
     {
         //ofClear(_clearColor.r, _clearColor.g, _clearColor.b, 0);
-		ofClear(0);
+		//ofClear(0);
+		ofClear(40,0);
 		        
         ofPushStyle();
         ofSetColor(255);
-		ofEnableBlendMode(OF_BLENDMODE_ADD);
-		ofEnableSmoothing();
+		ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+		//ofEnableSmoothing();
 
  	    ofSetColor(ofColor::lightGray);
 		
