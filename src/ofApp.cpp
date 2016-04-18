@@ -172,6 +172,14 @@ void ofApp::setup(){
 		form.method = OFX_HTTP_GET;
 		httpUtils.addForm(form);
 	}
+	
+	// Setup list box
+    _fboSettings.width = ofGetWidth()/3;
+	_fboSettings.height = 2*ofGetHeight()/3;
+	_fboSettings.internalformat = GL_RGBA;
+	_fbo.allocate(_fboSettings);
+
+    textDataUpdated=false;
 }
 
 //--------------------------------------------------------------
@@ -203,29 +211,74 @@ void ofApp::draw(){
 
 	int width = 0.9 * ofGetViewportWidth() / 3;
 	int height = ofGetViewportHeight() / 8;
+	wWidth=ofGetViewportWidth();
+	wHeight=ofGetViewportHeight();
 
+
+   if (textDataUpdated) {
+    _fbo.begin();
+    {
+        //ofClear(_clearColor.r, _clearColor.g, _clearColor.b, 0);
+		ofClear(0);
+		        
+        ofPushStyle();
+        ofSetColor(255);
+		ofEnableBlendMode(OF_BLENDMODE_ADD);
+		ofEnableSmoothing();
+
+ 	    ofSetColor(ofColor::lightGray);
+		
+		for (int j = 0; j < 5; j++) {
+			if (j % 2 == 0) {
+  			  ofSetColor(ofColor(40, 40, 40));
+			  //ofClear(40,0);
+  			  //ofBackground(ofColor(40, 40, 40));
+			}
+			else
+			{
+			  ofSetColor(ofColor::darkGrey);
+   			  //ofClear(255,0);
+   			  //ofBackground(ofColor::lightGray);
+			}
+	
+			if (linesForDisplay.size() > j) {
+			  ofDrawRectRounded(10, 160 + height * j , width, height, 10);
+			  ofSetColor(255);
+			  ucFont.drawString(linesForDisplay[j], 60, 190 + height * j);
+			}
+		}
+        
+        ofDisableAlphaBlending();
+        ofPopStyle();
+    }
+    _fbo.end();
+
+	textDataUpdated=false;   
+   }
 
 	if (!fullScreen[videoCounter])
 	{
-	  ofSetColor(ofColor::lightGray);
-	  //string  test = string("Västerhaninge");
-	  //linesForDisplay.push_back(test);
-
-	  for (int j = 0; j < 5; j++) {
-	    if (j % 2 == 0) {
-	      ofSetColor(ofColor(40, 40, 40));
-	    }
-	    else
-	    {
-	      ofSetColor(ofColor::lightGray);
-	    }
-
-	    if (linesForDisplay.size() > j) {
-	      ofDrawRectRounded(10, 160 + height * j , width, height, 10);
-	      ofSetColor(255);
-	      ucFont.drawString(linesForDisplay[j], 60, 190 + height * j);
-	    }
-	  }
+		ofSetColor(255, 255, 255);
+	 	_fbo.draw(0,0);
+#if 0
+ 	    ofSetColor(ofColor::lightGray);
+		
+		for (int j = 0; j < 5; j++) {
+			if (j % 2 == 0) {
+  			  ofSetColor(ofColor(40, 40, 40));
+			}
+			else
+			{
+			   ofSetColor(ofColor::lightGray);
+			}
+	
+			if (linesForDisplay.size() > j) {
+			  ofDrawRectRounded(10, 160 + height * j , width, height, 10);
+			  ofSetColor(255);
+			  ucFont.drawString(linesForDisplay[j], 60, 190 + height * j);
+			}
+		}
+#endif
 	}
 
 	//int position = (ofGetFrameNum()  30);
@@ -309,6 +362,7 @@ void ofApp::newResponse(ofxHttpResponse & response) {
 
 	if (XML.loadFromBuffer(response.responseBody))
 	{
+		linesForDisplay.clear();
 		//XML.setTo("ResponseOfDepartures"); // change relative root to <feed>
 		//XML.setTo("ResponseData"); // change relative root to <feed>
 		//XML.setTo("Trains");
@@ -337,6 +391,12 @@ void ofApp::newResponse(ofxHttpResponse & response) {
 			printf("%s\n", value.c_str());
 			//printf("%s\n", XML.getValue("entry:published", "", i).c_str());
 		}
+
+
+      textDataUpdated=true;
+	  //string  test = string("Västerhaninge");
+	  //linesForDisplay.push_back(test);
+
 
 	}
 }

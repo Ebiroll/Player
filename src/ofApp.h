@@ -5,7 +5,7 @@
 #include "ofxTrueTypeFontUC.h"
 
 
-//#define NO_OMX
+#define NO_OMX
 
 
 #ifndef NO_OMX
@@ -85,4 +85,14 @@ class ofApp : public ofBaseApp
         ofTrueTypeFont font;
         ofAlignHorz alignHorz;
         ofAlignVert alignVert;
+		
+		int wWidth;
+		int wHeight;
+		
+		bool textDataUpdated;
+		
+		// Use FBO to draw textlist
+        ofFbo _fbo;
+        ofFbo::Settings _fboSettings;
+        ofColor _clearColor;
 };
