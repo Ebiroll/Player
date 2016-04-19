@@ -5,6 +5,8 @@ bool doLoadNextMovie = false;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+	
+	ofTrueTypeFont::setGlobalDpi(72);
 	myfont = new ofTrueTypeFont;
 	ucFont.loadFont("AvalonB.ttf", 20, true, true);
 	//myfont->loadFont(OF_TTF_SANS, 20);
@@ -12,9 +14,10 @@ void ofApp::setup(){
 	font.loadFont("AvalonB.ttf", 40);
 	//gui->setFont("AvalonB.ttf", 20);
 
-	ofRectangle bound(280,20,300,20);
+
+	ofRectangle bound(0,ofGetViewportHeight()-120,1920*2,120);
 	
-	scrollText.setup(myfont,"Hello FBO Font",14);
+	scrollText.setup(myfont,"Hello FBO Font, can you scroll or is all hope lost? Maybe we have a faster scoller here. Just in case there is some misunderstanding I would like to inform you that this line is long like silly",bound);
 
 	
 	qsiImage = new ofImage("Qsi.png");
@@ -189,6 +192,8 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
+	
+	scrollText.update();
 #ifndef NO_OMX
 	if (doLoadNextMovie) 
 	{
@@ -290,12 +295,13 @@ void ofApp::draw(){
 	}
 
 
-        scrollText.draw();
 	
 	//int position = (ofGetFrameNum()  30);
 	int position = ofGetViewportWidth() - ofGetFrameNum();
 
-	myfont->drawString("Test of scrolling text for drawing with new positions every 10 frames", position, ofGetViewportHeight() - 60);
+    scrollText.draw(position,0);
+
+	//myfont->drawString("Test of scrolling text for drawing with new positions every 10 frames", position, ofGetViewportHeight() - 60);
 
 	ofSetColor(255);
 	noSmokeImage->draw(10, ofGetViewportHeight() - 120, 100, 80); //scale
