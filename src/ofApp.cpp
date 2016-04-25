@@ -3,6 +3,11 @@
 
 bool doLoadNextMovie = false;
 
+unsigned short     gPort=10010;
+
+conf config;
+
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 	
@@ -10,12 +15,12 @@ void ofApp::setup(){
 	myfont = new ofTrueTypeFont;
 	ucFont.loadFont("AvalonB.ttf", 20, true, true);
 	//myfont->loadFont(OF_TTF_SANS, 20);
-	myfont->loadFont("AvalonB.ttf", 40);
+	myfont->loadFont("AvalonB.ttf", 32);
 	font.loadFont("AvalonB.ttf", 40);
 	//gui->setFont("AvalonB.ttf", 20);
 
 
-	ofRectangle bound(0,ofGetViewportHeight()-120,1920*2,120);
+	ofRectangle bound(0,ofGetViewportHeight()-120,1920*1,32);
 	
 	scrollText.setup(myfont,"Hello FBO Font, can you scroll or is all hope lost? Maybe we have a faster scoller here. Just in case there is some misunderstanding I would like to inform you that this line is long like silly",bound);
 
@@ -183,11 +188,25 @@ void ofApp::setup(){
 	
 	// Setup list box
     _fboSettings.width = ofGetWidth()/3;
-	_fboSettings.height = 2*ofGetHeight()/3;
-	_fboSettings.internalformat = GL_RGBA;
-	_fbo.allocate(_fboSettings);
+    _fboSettings.height = 2*ofGetHeight()/3;
+    _fboSettings.internalformat = GL_RGBA;
+    _fbo.allocate(_fboSettings);
 
+   config.width=ofGetWidth();
+   config.height=ofGetHeight();
+
+	
     textDataUpdated=false;
+
+      
+    fServerSocket=new  ServerSocket(gPort);
+    // set-up a HTTPServer instance
+    fServer= new HTTPServer(new RequestHandlerFactory, *fServerSocket, new HTTPServerParams);
+    
+    if (fServer) fServer->start();
+
+    if (fServer) printf("Server Start ...................\n");
+    
 }
 
 //--------------------------------------------------------------

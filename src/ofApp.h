@@ -4,9 +4,11 @@
 #include "ofxHttpUtils.h"
 #include "ofxTrueTypeFontUC.h"
 #include "ofxTextLabelFbo.h"
+#include "server.h"
 
 
-#define NO_OMX
+
+//#define NO_OMX
 
 
 #ifndef NO_OMX
@@ -49,6 +51,10 @@ class ofApp : public ofBaseApp
 
 		ofxHttpUtils httpUtils;
 		ofxHttpUtils videoHttpUtils;
+
+		ServerSocket *fServerSocket;
+                HTTPServer *fServer;
+
 
 		ofxTrueTypeFontUC ucFont;
 		ofTrueTypeFont *myfont;
