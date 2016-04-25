@@ -56,7 +56,7 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
       
       std::string req=request.getURI();
       printf("------------- Serving web page: %s\n",req.c_str());
-      if ( request.getURI()  == "lib/jquery-2.2.3.min.js") {
+      if ( request.getURI()  == "/lib/jquery-2.2.3.min.js") {
           filename="data/lib/jquery-2.2.3.min.js";
           handleFileRequest(request, response);
           printf("FILE\n");
