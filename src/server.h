@@ -62,6 +62,7 @@ class PageRequestHandler : public HTTPRequestHandler
 public:
   void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response);
   void handleFileRequest(HTTPServerRequest& request, HTTPServerResponse& response);
+  std::string filename;
 };
 
 class WebSocketRequestHandler : public HTTPRequestHandler
