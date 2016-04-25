@@ -1,0 +1,18 @@
+[
+{ "code":1, "width":640, "height":480, "rate":60, "aspect_ratio":"4:3", "scan":"p", "3d_modes":[] },
+{ "code":2, "width":720, "height":480, "rate":60, "aspect_ratio":"4:3", "scan":"p", "3d_modes":[] },
+{ "code":3, "width":720, "height":480, "rate":60, "aspect_ratio":"16:9", "scan":"p", "3d_modes":[] },
+{ "code":4, "width":1280, "height":720, "rate":60, "aspect_ratio":"16:9", "scan":"p", "3d_modes":[] },
+{ "code":5, "width":1920, "height":1080, "rate":60, "aspect_ratio":"16:9", "scan":"i", "3d_modes":[] },
+{ "code":6, "width":720, "height":480, "rate":60, "aspect_ratio":"4:3", "scan":"i", "3d_modes":[] },
+{ "code":7, "width":720, "height":480, "rate":60, "aspect_ratio":"16:9", "scan":"i", "3d_modes":[] },
+{ "code":16, "width":1920, "height":1080, "rate":60, "aspect_ratio":"16:9", "scan":"p", "3d_modes":[] },
+{ "code":17, "width":720, "height":576, "rate":50, "aspect_ratio":"4:3", "scan":"p", "3d_modes":[] },
+{ "code":18, "width":720, "height":576, "rate":50, "aspect_ratio":"16:9", "scan":"p", "3d_modes":[] },
+{ "code":19, "width":1280, "height":720, "rate":50, "aspect_ratio":"16:9", "scan":"p", "3d_modes":[] },
+{ "code":20, "width":1920, "height":1080, "rate":50, "aspect_ratio":"16:9", "scan":"i", "3d_modes":[] },
+{ "code":21, "width":720, "height":576, "rate":50, "aspect_ratio":"4:3", "scan":"i", "3d_modes":[] },
+{ "code":22, "width":720, "height":576, "rate":50, "aspect_ratio":"16:9", "scan":"i", "3d_modes":[] },
+{ "code":31, "width":1920, "height":1080, "rate":50, "aspect_ratio":"16:9", "scan":"p", "3d_modes":[] },
+{ "code":32, "width":1920, "height":1080, "rate":24, "aspect_ratio":"16:9", "scan":"p", "3d_modes":[] }
+]

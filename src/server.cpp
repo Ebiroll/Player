@@ -28,9 +28,11 @@ std::string testFile="test.json";
 
 void PageRequestHandler::handleFileRequest(HTTPServerRequest& request, HTTPServerResponse& response)
 {
-std::string message;
+ std::string message;
+ response.setChunkedTransferEncoding(true);
+ response.setContentType("text/javascript");
 try {
-  std::ifstream t(filename.c_str());
+  std::ifstream t(filename.c_str() /* "data/lib/jquery-2.2.3.min.js"*/);
   if (t.good())
     {
       std::stringstream buffer;
@@ -54,7 +56,7 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
       
       std::string req=request.getURI();
       printf("------------- Serving web page: %s\n",req.c_str());
-      if ( request.getURI()  == "/lib/jquery-2.2.3.min.js") {
+      if ( request.getURI()  == "data/lib/jquery-2.2.3.min.js") {
           filename="/lib/jquery-2.2.3.min.js";
           handleFileRequest(request, response);
           printf("FILE\n");
@@ -69,7 +71,7 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
         //ostr << "<META HTTP-EQUIV=\"refresh\" CONTENT=\"5;url=''\"> ";
         ostr << "<title>Config server</title>";
 	// lib/jquery-2.2.3.min.js
-	ostr << "<script src=\"lib/jquery-2.2.3.min.js\"></script>";
+	ostr << "<script type=\"text/javascript\" src=\"lib/jquery-2.2.3.min.js\"></script>";
         ostr << "<script type=\"text/javascript\">";
         //ostr << " window.location = \"index.html\"";
 
