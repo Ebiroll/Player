@@ -5,10 +5,10 @@ $(document).ready(function() {
 var canvas = document.getElementById('canv'),
     ctx = canvas.getContext('2d'),   
     rect = {
-	x: 0,
-	y: 0,
-	w: 1280,
-	h: 720
+      x: 0,
+      y: 0,
+      w: 1280,
+      h: 720
     },
     handlesSize = 8,
     currentHandle = false,
