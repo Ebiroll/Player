@@ -9,6 +9,7 @@
 #include <fstream>
 #include <sstream>
 #include <streambuf>
+#include <iostream>
 
 #include <Poco/JSON/JSON.h>
 #include <Poco/JSON/Handler.h>
@@ -18,10 +19,13 @@
 #include <Poco/JSON/Query.h>
 #include <Poco/DateTimeFormatter.h>
 #include <Poco/Timestamp.h>
+#include <Poco/Net/HTMLForm.h>
+#include <Poco/URI.h>
 
 
 using namespace Poco::JSON;
 using namespace Poco::Dynamic;
+using namespace Poco::Net;
 
 std::string testFile="test.json";
 
@@ -50,6 +54,51 @@ try {
 
 }
 
+void AjaxRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
+{
+
+  std::string req=request.getURI();
+  std::string name;
+  std::string value;
+  printf("AJAX PAJAX\n");
+
+  std::istream& instr = request.stream();
+  instr >> value;
+
+  std::cout << "[" << value << "]" << std::endl ;
+  std::string silllyURI=std::string("http://localhost/api/save?") + value;
+  Poco::URI uri1(silllyURI);
+
+  Poco::URI::QueryParameters params = uri1.getQueryParameters();
+
+  Poco::JSON::Object config;
+
+
+  for (int i=0;i<params.size();i++) {
+      std::pair < std::string, std::string > it=params[i];
+      name=it.first;
+      value=it.second;
+      config.set(name,value);
+      std::cout << name << "=" << value << std::endl ;
+  }
+
+  config.stringify(std::cout);
+
+  std::cout << std::endl;
+
+/*
+  HTMLForm form( request );
+  NameValueCollection::ConstIterator i = form.begin();
+
+  while(i!=form.end()){
+
+      name=i->first;
+      value=i->second;
+      std::cout << name << "=" << value << std::endl ;
+      ++i;
+  }
+  */
+}
 
 void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
     {
@@ -95,9 +144,12 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
         ostr << "</script>";
         ostr << "</head>";
         ostr << "<body>";
+
 //#ifdef TEST_CHANGE
         ostr << "  <h1>Configuration of display</h1><br />";
-        ostr << "  <canvas id=\"canv\" width=\"" << config.width << "\" height=\"" << config.height << "\"></canvas>";
+        ostr << "<div id=\"output\">config ";
+        ostr << "<input type =\"button\" id = \"sb\" value=\"Save\"/> </div>";
+        ostr << "  <canvas id=\"canv\" color=\"lightgrey\" width=\"" << config.width << "\" height=\"" << config.height << "\"></canvas>";
 //#endif
         ostr << "  <h2>Width " << config.width << "</h2><br />";
         ostr << "  <h2>Height " << config.height <<  "</h2><br />";
@@ -115,14 +167,58 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
     }
 
 
+std::string readFile(std::string filename) {
+    std::string ret;
+    std::ifstream t(filename.c_str());
+    if (t.good())
+      {
+        std::stringstream buffer;
+        buffer << t.rdbuf();
+        ret = buffer.str();
+      }
+  return (ret);
+}
+
+void serveConfig(WebSocket &ws)
+{
+
+    std::string conf =readFile("data/test_config.json");
+    int flags;
+    int n;
+    ws.sendFrame(conf.c_str(),conf.size());
+
+    do {
+        if (ws.poll(100,Poco::Net::Socket::SELECT_READ || Poco::Net::Socket::SELECT_ERROR))
+        {
+            char buffer[1024];
+            n = ws.receiveFrame(buffer, sizeof(buffer), flags);
+            printf("got %s\n",buffer);
+            std::string message=std::string(buffer,n);
+            std::ofstream of("data/test_config.json");
+            if (of.is_open())
+            {
+                of << message;
+            }
+            // Save this to file
+        }
+    }
+    while (n > 0 || (flags & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE);
+}
+
+
 void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
     {
       Application& app = Application::instance();
         try
         {
+            // This should send a response.. Error in implementation :-P
             WebSocket ws(request, response);
             //app.logger().information("WebSocket connection established.");
-	    printf("WebSocket connection established.....................\n");
+             printf("WebSocket connection established.....................\n");
+
+            serveConfig(ws);
+
+
             char buffer[1024];
             int flags;
             int n;
@@ -134,6 +230,7 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                 //app.logger().information(Poco::format("Data %s.",std::string(buffer,n)));
 
                 std::string subscribe=std::string(buffer,n);
+                std::cout << "received " << subscribe << std::endl;
 
 
                 Parser parser;
@@ -145,6 +242,7 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                 std::string value = topic.convert<std::string>();
                 app.logger().information(Poco::format("Topic %s.",value));
 
+                serveConfig(ws);
 
                 if (value=="/atis/EVRA/ATIS_ARRDEP/marked")
                 {
@@ -201,20 +299,25 @@ HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServer
 
         for (HTTPServerRequest::ConstIterator it = request.begin(); it != request.end(); ++it)
         {
-	  //app.logger().information(it->first + ": " + it->second);
+            //app.logger().information(it->first + ": " + it->second);
         }
 
         std::string uri=request.getURI();
+        if (uri=="/api/save") {
+            return new AjaxRequestHandler;
+        } else {
 
-        if(request.find("Upgrade") != request.end() && Poco::icompare(request["Upgrade"], "websocket") == 0)
-	  {
-	    printf("WebSocket Request\n");
-            return new WebSocketRequestHandler;
-	  }
-	else
-	  {
-     	     printf("Page Request\n");
-             return new PageRequestHandler;
-	  }
+
+                if(request.find("Upgrade") != request.end() && Poco::icompare(request["Upgrade"], "websocket") == 0)
+              {
+                printf("WebSocket Request\n");
+                    return new WebSocketRequestHandler;
+              }
+                  else
+              {
+                     printf("Page Request\n");
+                     return new PageRequestHandler;
+              }
+        }
     }
 

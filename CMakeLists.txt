@@ -5,7 +5,8 @@ SET (CMAKE_BUILD_TYPE Debug)
 
 #This should be done by Find
 
-SET(Poco_INCLUDE_DIR /usr/local/include/Poco)
+# /usr/local/include/Poco
+SET(Poco_INCLUDE_DIR /home/olas/poco-1.6.0)
 
 SET(Poco_INCLUDE_DIRS
     poco/Net/include
@@ -17,6 +18,7 @@ SET(Poco_INCLUDE_DIRS
     ${Poco_INCLUDE_DIR}/JSON/include
 )
 
+#/usr/local/lib
 SET(Poco_LIBRARY_DIR /usr/local/lib)
 
 SET(Poco_LIBRARIES

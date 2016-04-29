@@ -34,7 +34,7 @@ class WebSocketServer: public Poco::Util::ServerApplication
 };
 
 
-std::string readFile(std::string filename) {
+std::string readFileToString(std::string filename) {
     std::string ret;
     std::ifstream t(filename.c_str() /* "data/lib/jquery-2.2.3.min.js"*/);
     if (t.good())
@@ -61,7 +61,7 @@ void parseModesFile() {
 
 
       //std::string conf = std::string(" [ { \"code\":1 ,  \"width\":640, \"height\":480 } ,  { \"code\":3 ,  \"width\":800, \"height\":600 } ]");
-      std::string conf =readFile("data/modes.json");
+      std::string conf =readFileToString("data/modes.json");
       Parser parser;
       Var result = parser.parse(conf);
 
@@ -96,8 +96,8 @@ int main(int argc,char *argv[] ){
 
     parseModesFile();
 
-    config.width=1280;
-    config.height=1024;
+    config.width=800;
+    config.height=600;
 
 
     gSocketServer=new  ServerSocket(10020);

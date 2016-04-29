@@ -65,6 +65,15 @@ public:
   std::string filename;
 };
 
+
+class AjaxRequestHandler : public HTTPRequestHandler
+        /// Return a HTML document with some JavaScript
+{
+public:
+  void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response);
+};
+
+
 class WebSocketRequestHandler : public HTTPRequestHandler
         /// Handle a WebSocket connection.
 {
