@@ -1,9 +1,16 @@
 
 
 
+function wsurl(s) {
+    var l = window.location;
+    return ((l.protocol === "https:") ? "wss://" : "ws://") + l.host + l.pathname + s;
+}
+
+
+
 $(document).ready(function() {
     // put your Javascript here
-      var socket = new WebSocket("ws://localhost:10020/socket/config/");
+      var socket = new WebSocket(wsurl("/socket/config/"));
 
 
       socket.onopen = function(){
