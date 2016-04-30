@@ -67,10 +67,14 @@ void load_current_config()
     try {
 
       std::string conf =readFileToString(total.c_str());
+      std::cout << "---" << conf;
+      std::cout << "---" << std::endl;
       Parser parser;
       Var result = parser.parse(conf);
 
       Poco::JSON::Array::Ptr arr = result.extract<Poco::JSON::Array::Ptr>();
+      printf("Array \n");
+
       for (int i=0;i<arr->size(); i++) {
           Object::Ptr object = arr->getObject(i);
           std::string name=object->getValue<std::string>("name");

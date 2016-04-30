@@ -330,7 +330,7 @@ void ofApp::draw(){
 	//myfont->drawString("Test of scrolling text for drawing with new positions every 10 frames", position, ofGetViewportHeight() - 60);
 
 	ofSetColor(255);
-	noSmokeImage->draw(10, ofGetViewportHeight() - 120, 100, 80); //scale
+	noSmokeImage->draw(config.r[no_smoke].x, config.r[no_smoke].y, config.r[no_smoke].w, config.r[no_smoke].h); //scale
 
 #ifndef NO_OMX
 

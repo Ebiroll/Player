@@ -128,13 +128,14 @@ void AjaxRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
 
   // Write to current config file in same dir...
   std::string total= std::string("data/") + std::string(config.name);
-  std::ofstream of(total.c_str());
-  if (of.is_open())
   {
-      of << value;
+      std::ofstream of(total.c_str());
+      if (of.is_open())
+      {
+          of << value;
+      }
+      std::cout << "Saving to " << total << std::endl;
   }
-  std::cout << "Saving to " << total << std::endl;
-
   load_current_config();
 }
 
