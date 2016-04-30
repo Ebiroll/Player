@@ -385,7 +385,7 @@ void ofApp::draw(){
             omxPlayer.draw(0,0,ofGetWidth(), ofGetHeight());
 	} else
         {
-            omxPlayer.draw(ofGetWidth()-scaledWidth, 160, scaledWidth, scaledHeight);	  	  
+            omxPlayer.draw(config.r[video].x, config.r[video].y, config.r[video].w, config.r[video].h);	  	  
 	}
 
 

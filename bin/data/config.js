@@ -115,6 +115,24 @@ function init() {
         // $('#conf').innerHtml(str);
       });
 
+      // Saves configuration
+      $("#saveconf").click(function(e){
+        var str=document.getElementById('conf').innerHTML;
+       $.ajax({
+                  "dataType"    : 'json',
+                  "type"        : "put",
+                  "url"         : "/api/save",
+                  contentType   : 'application/json',
+                  "processData" : false,
+                  "data":  JSON.stringify(str) ,
+                  "complete": function (response) {
+                      console.log('complete save');
+                      //$('#output').html(response.responseText);
+                  }
+              });
+
+      });
+
 
       $("#sb").click(function(e){
          test = { config : mulrect };

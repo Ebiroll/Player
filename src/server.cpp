@@ -219,7 +219,7 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
         ostr << "<input type =\"button\" id = \"sb\" value=\"Save\"/> </div>";
         // Restart button
         ostr << "<form action='/api/restart'>";
-        ostr << "        <input type='submit' value='Submit'>";
+        ostr << "        <input type='submit' value='Restart'>";
         ostr << "</form>";
 
         ostr << "  <canvas id=\"canv\" color=\"lightgrey\" width=\"" << config.width << "\" height=\"" << config.height << "\"></canvas>";
@@ -229,10 +229,11 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
         ostr << "  <select id='cea'' name='ceaselect'' ><option selected='selected'>tv</option></select><input type ='button' id = 'ceaset' value='Set TV mode'/>";
         ostr << "  <select id='dmt'' name='dmtselect'' ><option selected='selected'>monitor</option></select><input type ='button' id = 'dmtset' value='Set Monitor mode'/>";
         ostr << "  <br><input type ='button' id = 'getconf' value='Get current config'/>";
+        ostr << "  <br><input type ='button' id = 'saveconf' value='Save current config'/>";
         ostr << "  <textarea id = 'conf' rows='20' cols='100'>config.json<</textarea>";
         ostr << "<form action='/api/shutdown'>";
         ostr << "        <input type='password'' name='pass' value=''><br>";
-        ostr << "        <input type='submit' value='Submit'>";
+        ostr << "        <input type='submit' value='Shutdown'>";
         ostr << "</form>";
         //        ostr << "<table>";
         //for (int i=0;i<debugArray.size();i++)
