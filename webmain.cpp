@@ -24,6 +24,13 @@ using namespace Poco::Dynamic;
 
 conf config;
 
+
+void setNewMode(const char *mode) {
+	
+    printf("---tvservice %s---",mode);
+}
+
+
 ServerSocket *gSocketServer;
 HTTPServer *gServer;
 

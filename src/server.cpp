@@ -22,6 +22,7 @@
 #include <Poco/Net/HTMLForm.h>
 #include <Poco/URI.h>
 
+extern void setNewMode(const char *mode);
 
 using namespace Poco::JSON;
 using namespace Poco::Dynamic;
@@ -34,7 +35,7 @@ void PageRequestHandler::handleFileRequest(HTTPServerRequest& request, HTTPServe
 {
  std::string message;
  response.setChunkedTransferEncoding(true);
- response.setContentType("text/javascript");
+ response.setContentType(type.c_str());
 try {
   std::ifstream t(filename.c_str() /* "data/lib/jquery-2.2.3.min.js"*/);
   if (t.good())
@@ -53,6 +54,50 @@ try {
   ostr << message;
 
 }
+
+void ModeRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
+{
+
+  std::string req=request.getURI();
+  std::string name;
+  std::string value;
+  printf("Mode request\n");
+
+  std::istream& instr = request.stream();
+  instr >> value;
+
+  std::cout << "[" << value << "]" << std::endl ;
+  std::string silllyURI=std::string("http://localhost/api/mode?") + value;
+  Poco::URI uri1(silllyURI);
+
+  Poco::URI::QueryParameters params = uri1.getQueryParameters();
+
+  std::string type;
+  std::string mode;
+
+  for (int i=0;i<params.size();i++) {
+      std::pair < std::string, std::string > it=params[i];
+      name=it.first;
+      value=it.second;
+      if (name=="type")
+      {
+          type=value;
+      }
+      if (name=="mode")
+      {
+          mode=value;
+      }
+
+      std::cout << name << "=" << value << std::endl ;
+  }
+
+  std::string all=type + std::string(" ") + value;
+  setNewMode(all.c_str());
+
+  std::cout << std::endl;
+
+}
+
 
 void AjaxRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
 {
@@ -104,14 +149,33 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
     {
       
       std::string req=request.getURI();
+      // data/modes_DMT.json
       printf("------------- Serving web page: %s\n",req.c_str());
       if ( request.getURI()  == "/lib/jquery-2.2.3.min.js") {
           filename="data/lib/jquery-2.2.3.min.js";
+          type="text/javascript";
           handleFileRequest(request, response);
           printf("FILE\n");
 	    return;
       }
       
+       if ( request.getURI()  == "/modes_CEA.json") {
+           filename="data/modes_CEA.json";
+           type="text/json";
+           handleFileRequest(request, response);
+           printf("modes_CEA\n");
+           return;
+       }
+
+       if ( request.getURI()  == "/modes_DMT.json") {
+           filename="data/modes_DMT.json";
+           type="text/json";
+           handleFileRequest(request, response);
+           printf("modes_DMT\n");
+           return;
+       }
+
+
       response.setChunkedTransferEncoding(true);
       response.setContentType("text/html");
         std::ostream& ostr = response.send();
@@ -153,7 +217,10 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
 //#endif
         ostr << "  <h2>Width " << config.width << "</h2><br />";
         ostr << "  <h2>Height " << config.height <<  "</h2><br />";
-	//        ostr << "<table>";
+        ostr << "  <select id='cea'' name='ceaselect'' ><option selected='selected'>tv</option></select><input type ='button' id = 'ceaset' value='Set TV mode'/>";
+        ostr << "  <select id='dmt'' name='dmtselect'' ><option selected='selected'>monitor</option></select><input type ='button'' id = 'dmtset' value='Set Monitor mode'/>";
+
+        //        ostr << "<table>";
         //for (int i=0;i<debugArray.size();i++)
         //{
         //    ostr << "<tr>";
@@ -302,8 +369,12 @@ HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServer
             //app.logger().information(it->first + ": " + it->second);
         }
 
+        // ModeRequestHandler
         std::string uri=request.getURI();
-        if (uri=="/api/save") {
+
+        if (uri=="/api/mode") {
+            return new ModeRequestHandler;
+        } else  if(uri=="/api/save") {
             return new AjaxRequestHandler;
         } else {
 

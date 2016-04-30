@@ -103,5 +103,6 @@ class ofApp : public ofBaseApp
         ofFbo::Settings _fboSettings;
         ofColor _clearColor;
 
-	ofxTextLabelFbo scrollText;
+	//ofxTextLabelFbo scrollText;
+	ofxScrollingText scrollingText;
 };

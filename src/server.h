@@ -24,6 +24,7 @@
 #include "Poco/Net/NetException.h"
 #include "Poco/JSON/Query.h"
 #include "Poco/JSON/Template.h"
+#include "config.h"
 
 using Poco::Net::ServerSocket;
 using Poco::Net::WebSocket;
@@ -49,10 +50,6 @@ using Poco::Net::HTTPMessage;
 using Poco::Net::WebSocket;
 using Poco::Net::WebSocketException;
 
-typedef struct conf {
-  int width;
-  int height;
-};
 
 extern conf config;
 
@@ -63,6 +60,7 @@ public:
   void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response);
   void handleFileRequest(HTTPServerRequest& request, HTTPServerResponse& response);
   std::string filename;
+  std::string type;
 };
 
 
@@ -73,6 +71,12 @@ public:
   void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response);
 };
 
+class ModeRequestHandler : public HTTPRequestHandler
+        /// Return a HTML document with some JavaScript
+{
+public:
+  void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response);
+};
 
 class WebSocketRequestHandler : public HTTPRequestHandler
         /// Handle a WebSocket connection.
