@@ -9,6 +9,7 @@ void setNewMode(const char *mode) {
 	
 	sprintf(Buffer,"%s",mode);
 	newMode=std::string(Buffer);
+	ofExit();
 }
 
 void run() {
@@ -33,7 +34,7 @@ int main( ){
 	// Current setting
 	system("/opt/vc/bin/tvservice -s > data/current.txt");
 
-        ofRunApp(new ofApp());
+    ofRunApp(new ofApp());
 
 	// To set mode,
 	// tvservice -e "CEA 4"

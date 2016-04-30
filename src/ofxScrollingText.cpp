@@ -8,14 +8,14 @@
 #include "ofxScrollingText.h"
 
 //--------------------------------------------------------------
-ofxScrollingText *ofxScrollingText::mIns = 0;
+//ofxScrollingText *ofxScrollingText::mIns = 0;
 
-ofxScrollingText* ofxScrollingText::instance(){
-    if(!mIns){
-        mIns = new ofxScrollingText();
-    }
-    return mIns;
-}
+//ofxScrollingText* ofxScrollingText::instance(){
+//    if(!mIns){
+//        mIns = new ofxScrollingText();
+//    }
+//    return mIns;
+//}
 
 //--------------------------------------------------------------
 ofxScrollingText::ofxScrollingText(){

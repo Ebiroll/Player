@@ -32,12 +32,13 @@ public:
     
     // complete event.
     static ofEvent<void> completeEvent;
-    
-private:
+
     ofxScrollingText();
     ~ofxScrollingText();
+    
+private:
     // private instance
-    static ofxScrollingText* mIns;
+    //static ofxScrollingText* mIns;
     
     ofxTrueTypeFontUC font;
     bool isVisible;
