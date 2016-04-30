@@ -43,13 +43,13 @@ std::string getSelectedConfig()
 void set_default() {
     config.r[logo].x=0;
     config.r[logo].y=0;
-    config.r[logo].w=10;
-    config.r[logo].h=10;
+    config.r[logo].w=20;
+    config.r[logo].h=20;
 
     config.r[no_smoke].x=20;
     config.r[no_smoke].y=20;
-    config.r[no_smoke].w=10;
-    config.r[no_smoke].h=10;
+    config.r[no_smoke].w=20;
+    config.r[no_smoke].h=20;
 
 
 }
@@ -60,12 +60,13 @@ void load_current_config()
     // Set default config
 
     set_default();
-
     std::string filename=getSelectedConfig();
+    std::string total= std::string("data/") + filename;
+
 
     try {
 
-      std::string conf =readFileToString(filename.c_str());
+      std::string conf =readFileToString(total.c_str());
       Parser parser;
       Var result = parser.parse(conf);
 

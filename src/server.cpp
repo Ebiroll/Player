@@ -133,8 +133,9 @@ void AjaxRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
   {
       of << value;
   }
+  std::cout << "Saving to " << total << std::endl;
 
-   load_current_config();
+  load_current_config();
 }
 
 void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
