@@ -12,7 +12,7 @@ public:
 	//void setURL(std::string uri);
 	void setHeaderByCommalist(std::string commaseparatedlist);
     
-    void setPosition(int x, int y);
+    void setPosition(int x, int y,int w, int h);
 
     void setActive(bool active);
     bool getActive() {return active;}

@@ -251,6 +251,8 @@ void ofApp::update(){
 	
 	scrollingText.update();
 	//scrollText.update();
+   dataList.setPosition(config.r[datalist].x, config.r[datalist].y, config.r[datalist].w, config.r[datalist].h);
+
 #ifndef NO_OMX
 	if (doLoadNextMovie) 
 	{

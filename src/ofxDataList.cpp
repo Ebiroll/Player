@@ -71,10 +71,15 @@ void ofxDataList::setActive(bool active)
     }
 }
 //--------------------------------------------------------------
-void ofxDataList::setPosition(int x, int y)
+void ofxDataList::setPosition(int x, int y,int w, int h)
 {
     this->x = x;
     this->y = y;
+    width=w; 
+    height=h;
+    cellWidth = width / numDisplayCols;  
+	cellHeight = height / (numDisplayRows + 1);
+
 }
 
 struct tokens : std::ctype<char>
