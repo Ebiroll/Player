@@ -5,7 +5,7 @@
 #include "ofxTrueTypeFontUC.h"
 #include "ofxTextLabelFbo.h"
 #include "server.h"
-
+#include "ofxScrollingText.h"
 
 
 //#define NO_OMX
@@ -25,7 +25,8 @@ class ofApp : public ofBaseApp
 		void setup();
 		void update();
 		void draw();
-
+		~ofApp();
+		
 		void keyPressed(int key);
 		void keyReleased(int key);
 		void mouseMoved(int x, int y );
@@ -104,5 +105,5 @@ class ofApp : public ofBaseApp
         ofColor _clearColor;
 
 	//ofxTextLabelFbo scrollText;
-	ofxScrollingText scrollingText;
+	//ofxScrollingText scrollingText;
 };

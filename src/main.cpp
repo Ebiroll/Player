@@ -12,19 +12,19 @@ void setNewMode(const char *mode) {
 }
 
 void run() {
-	ofSetupOpenGL(1280,1024, OF_FULLSCREEN);			// <-------- setup the GL context  1920,1080
+
 
 	// this kicks off the running of my app
 	// can be OF_WINDOW or OF_FULLSCREEN
 	// pass in width and height too:
 
-    ofRunApp(new ofApp());
+
 }
 
 
 //========================================================================
 int main( ){
-
+	ofSetupOpenGL(1280,1024, OF_FULLSCREEN);			// <-------- setup the GL context  1920,1080
 	// TV
 	system("/opt/vc/bin/tvservice -j -m CEA > data/modes_CEA.json");
 	// Monitor
@@ -33,10 +33,11 @@ int main( ){
 	// Current setting
 	system("/opt/vc/bin/tvservice -s > data/current.txt");
 
+        ofRunApp(new ofApp());
 
 	// To set mode,
 	// tvservice -e "CEA 4"
-	run();
+	//run();
 	// To exit call.... ofExit().
 	// To cleanup add methis,
 	// void ofBaseApp::exit()

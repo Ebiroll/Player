@@ -9,6 +9,7 @@
 
 //--------------------------------------------------------------
 ofxScrollingText *ofxScrollingText::mIns = 0;
+
 ofxScrollingText* ofxScrollingText::instance(){
     if(!mIns){
         mIns = new ofxScrollingText();
