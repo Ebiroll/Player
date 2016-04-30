@@ -11,6 +11,12 @@ unsigned short     gPort=10010;
 //{
 //}
 
+void ofApp::onScrolltextFinnish()
+{
+	scrollingText.showText("This text will repeat again and again.....");
+
+}
+
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -27,9 +33,26 @@ void ofApp::setup(){
 	ofRectangle bound(0,ofGetViewportHeight()-120,1920*1,32);
 	
 	//scrollText.setup(myfont,"Hello FBO Font, can you scroll or is all hope lost? Maybe we have a faster scoller here. Just in case there is some misunderstanding I would like to inform you that this line is long like silly",bound);
-	scrollingText.setup("AvalonB.ttf",60);
+	scrollingText.setup("AvalonB.ttf",20,200,200,400,100);
 	scrollingText.showText("This text does not support Unicode but I dont care, it can maybe scroll");
-	
+	scrollingText.setSpeed(4.0);
+
+	dataList.setup(config.r[datalist].x, config.r[datalist].y, config.r[datalist].w, config.r[datalist].h, 3, 3);
+
+	//dataList.setup(10, 100, 400, 400, 3, 3);
+
+	vector<string> entry;
+	entry.push_back("J");
+	entry.push_back("12:10");
+	entry.push_back("Jakarta");
+	entry.push_back("????");
+
+	dataList.addEntry(entry);
+	dataList.addEntry(entry);
+	dataList.addEntry(entry);
+
+	ofAddListener(scrollingText.completeEvent, this, &ofApp::onScrolltextFinnish);
+
 	qsiImage = new ofImage("Qsi.png");
 	da4fidImage = new ofImage("DA4FID2.png");
 	noSmokeImage = new ofImage("no_smoking.png");
@@ -80,8 +103,17 @@ void ofApp::setup(){
 			std::cout << "row:" << row << "\r\n";
 		}
 
+		if (value == "data2.columns") {
+			columnames = datasourcesXML.getValue();
+			std::cout << "columns:" << columnames << "\r\n";
+		}
+
+		
+
+
 	}
 	//ofXml traindataXML;
+	dataList.setHeaderByCommalist(columnames);
 
 	//// Playlist
 	if (!playlistXML.load("playlist.xml")) {
@@ -282,7 +314,7 @@ void ofApp::update(){
 void ofApp::draw(){
 	//ofDrawBitmapString("Hello World", 10, 10);
         //static int times=0;
-	myfont->drawString("Hang Nadim Batam Airport", 250, 50);
+	myfont->drawString("Hang Nadim Batam Airport", config.r[label].x, config.r[label].y);
 	ofSetColor(255);
 
 	da4fidImage->draw(config.r[logo].x, config.r[logo].y, config.r[logo].w, config.r[logo].h); //scale
@@ -297,7 +329,8 @@ void ofApp::draw(){
 	if (!fullScreen[videoCounter])
 	{
 		ofSetColor(255, 255, 255);
-	 	_fbo.draw(0,0);
+		dataList.draw();
+	 	//_fbo.draw(0,0);
 #if 0
  	    ofSetColor(ofColor::lightGray);
 		
@@ -318,7 +351,6 @@ void ofApp::draw(){
 		}
 #endif
 	}
-
 
 	
 	//int position = (ofGetFrameNum()  30);

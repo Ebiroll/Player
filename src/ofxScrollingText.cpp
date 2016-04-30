@@ -38,25 +38,28 @@ ofxScrollingText::~ofxScrollingText(){
 }
 
 //--------------------------------------------------------------
-void ofxScrollingText::setup(string _fontPath, int _fontSize){
+void ofxScrollingText::setup(string _fontPath, int _fontSize,int x, int y, int w, int h){
     font.loadFont(_fontPath, _fontSize, true, true);
-    height = _fontSize * 2;
+	height = h; // _fontSize * 2;
+	x = x;
+	y = y;
+	width = w;
 }
 
 //--------------------------------------------------------------
 void ofxScrollingText::update(){
-    width = ofGetWidth();
-    textPosition.y = ofGetHeight() - height;
+    //width = ofGetWidth();
+    textPosition.y = y;
     if(isVisible && textString != ""){
         if( alpha < 1) alpha += (1 - alpha) * 0.1;
         if(isScroll){
-            if(0 < textPosition.x + font.stringWidth(textString)){
+            if(x < textPosition.x + font.stringWidth(textString)){
                 textPosition.x -= speed;
             }else{
                 isVisible = false;
             }
         }else{
-            textPosition.x = ofGetWidth() / 2 - font.stringWidth(textString) / 2;
+            textPosition.x = width / 2 - font.stringWidth(textString) / 2;
         }
     }else{
         if( alpha > 0.01){
@@ -76,7 +79,7 @@ void ofxScrollingText::update(){
 void ofxScrollingText::draw(){
     ofPushStyle();
     ofSetColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a * alpha);
-    ofRect(0, textPosition.y, width, height);
+    //ofRect(x, y, width, height);
     ofSetColor(fontColor.r, fontColor.g, fontColor.b, fontColor.a * alpha);
     font.drawString(textString, textPosition.x, textPosition.y + height - (height - font.stringHeight(textString))/2);
     ofPopStyle();
@@ -88,7 +91,7 @@ void ofxScrollingText::showText(string _message){
         textString = _message;
         isVisible = true;
         isPlaying = true;
-        textPosition.x = ofGetWidth();
+        textPosition.x = x+width;
     }
 }
 

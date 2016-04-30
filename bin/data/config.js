@@ -82,7 +82,7 @@ var canvas = document.getElementById('canv'),
 
    $.getJSON("/config.json", function(config){
      //mulrect=JSON.parse(config);
-     mulrect=config;
+     //mulrect=config;
      console.log("----------------------------");
      console.log(config);
      draw();

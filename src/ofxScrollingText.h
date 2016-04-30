@@ -13,7 +13,7 @@
 class ofxScrollingText{
 public:
     static ofxScrollingText* instance();
-    void setup(string _fontPath, int _fontSize = 48);
+    void setup(string _fontPath, int _fontSize, int x, int y, int w, int h);
     void update();
     void draw();
     
@@ -50,6 +50,9 @@ private:
     ofColor bgColor;
     string textString;
     ofPoint textPosition;
+	int x;
+	int y;
+
     int width;
     int height;
 };

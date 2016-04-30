@@ -14,7 +14,7 @@ typedef  enum {
   video=0,
   logo,
   label,
-  list,
+  datalist,
   no_smoke,
   scroll  
 } e_rect;

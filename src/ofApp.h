@@ -6,9 +6,10 @@
 #include "ofxTextLabelFbo.h"
 #include "server.h"
 #include "ofxScrollingText.h"
+#include "ofxDataList.h"
 
 
-//#define NO_OMX
+#define NO_OMX
 
 
 #ifndef NO_OMX
@@ -39,6 +40,7 @@ class ofApp : public ofBaseApp
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
+		void onScrolltextFinnish();
 #ifndef NO_OMX
 		void onVideoEnd(ofxOMXPlayerListenerEventData& e);
 		void onVideoLoop(ofxOMXPlayerListenerEventData& e) { /*empty*/ };
@@ -54,7 +56,7 @@ class ofApp : public ofBaseApp
 		ofxHttpUtils videoHttpUtils;
 
 		ServerSocket *fServerSocket;
-                HTTPServer *fServer;
+        HTTPServer *fServer;
 
 
 		ofxTrueTypeFontUC ucFont;
@@ -79,12 +81,13 @@ class ofApp : public ofBaseApp
 
 
         ofXml XML;
-	std::string url;
+	    std::string url;
         std::string root;
-	std::string row;
+	    std::string row;
+		std::string columnames;
 
         std::vector<std::string> columns;
-	std::vector<std::string> linesForDisplay;
+	    std::vector<std::string> linesForDisplay;
 
 
         ofRectangle frameBounds;
@@ -94,8 +97,8 @@ class ofApp : public ofBaseApp
         ofAlignHorz alignHorz;
         ofAlignVert alignVert;
 		
-	int wWidth;
-	int wHeight;
+	   int wWidth;
+	   int wHeight;
 	
 	bool textDataUpdated;
 		
@@ -106,4 +109,5 @@ class ofApp : public ofBaseApp
 
 	//ofxTextLabelFbo scrollText;
 	ofxScrollingText scrollingText;
+	ofxDataList  dataList;
 };
