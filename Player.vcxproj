@@ -120,7 +120,9 @@ S:\work\of_v0.9.3_vs_release\addons\ofxAssimpModelLoader\libs\assimp\lib\vs\Win3
       <WarningLevel>Level3</WarningLevel>
       <AdditionalIncludeDirectories>S:\work\of_v0.9.3_vs_release\addons\ofxAssimpModelLoader\src;S:\work\of_v0.9.3_vs_release\addons\ofxAssimpModelLoader\libs\assimp\include;S:\work\of_v0.9.3_vs_release\addons\ofxAssimpModelLoader\libs\assimp\include\assimp;S:\work\of_v0.9.3_vs_release\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\Compiler;S:\work\of_v0.9.3_vs_release\addons\ofxNetwork\src;
 S:\work\of_v0.9.3_vs_release\addons\ofxVectorGraphics\src;
-S:\work\of_v0.9.3_vs_release\addons\ofxVectorGraphics\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+S:\work\of_v0.9.3_vs_release\addons\ofxVectorGraphics\libs;
+
+S:\work\of_v0.9.3_vs_release\addons\ofxTrueTypeFontUC\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -195,16 +197,23 @@ S:\work\of_v0.9.3_vs_release\addons\ofxAssimpModelLoader\libs\assimp\lib\vs\x64\
     <ClCompile Include="..\..\of_v0.9.3_vs_release\addons\ofxNetwork\src\ofxTCPManager.cpp" />
     <ClCompile Include="..\..\of_v0.9.3_vs_release\addons\ofxNetwork\src\ofxTCPServer.cpp" />
     <ClCompile Include="..\..\of_v0.9.3_vs_release\addons\ofxNetwork\src\ofxUDPManager.cpp" />
+    <ClCompile Include="..\..\of_v0.9.3_vs_release\addons\ofxTrueTypeFontUC\src\ofxTrueTypeFontUC.cpp" />
     <ClCompile Include="..\..\of_v0.9.3_vs_release\addons\ofxVectorGraphics\libs\CreEPS.cpp" />
     <ClCompile Include="..\..\of_v0.9.3_vs_release\addons\ofxVectorGraphics\src\ofxVectorGraphics.cpp" />
+    <ClCompile Include="src\config.cpp" />
     <ClCompile Include="src\main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\ofApp.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\ofxDataList.cpp" />
     <ClCompile Include="src\ofxHttpUtils.cpp" />
+    <ClCompile Include="src\ofxScrollingText.cpp" />
     <ClCompile Include="src\ofxTextLabel.cpp" />
+    <ClCompile Include="src\ofxTextLabelFbo.cpp" />
+    <ClCompile Include="src\ofxTrueTypeFontUC.cpp" />
+    <ClCompile Include="src\server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\of_v0.9.3_vs_release\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\ai_assert.h" />
@@ -254,10 +263,20 @@ S:\work\of_v0.9.3_vs_release\addons\ofxAssimpModelLoader\libs\assimp\lib\vs\x64\
     <ClInclude Include="..\..\of_v0.9.3_vs_release\addons\ofxNetwork\src\ofxTCPManager.h" />
     <ClInclude Include="..\..\of_v0.9.3_vs_release\addons\ofxNetwork\src\ofxTCPServer.h" />
     <ClInclude Include="..\..\of_v0.9.3_vs_release\addons\ofxNetwork\src\ofxUDPManager.h" />
+    <ClInclude Include="..\..\of_v0.9.3_vs_release\addons\ofxTrueTypeFontUC\src\ofxTrueTypeFontUC.h" />
     <ClInclude Include="..\..\of_v0.9.3_vs_release\addons\ofxVectorGraphics\libs\CreEPS.hpp" />
     <ClInclude Include="..\..\of_v0.9.3_vs_release\addons\ofxVectorGraphics\libs\CreEPS_Types.hpp" />
     <ClInclude Include="..\..\of_v0.9.3_vs_release\addons\ofxVectorGraphics\src\ofxVectorGraphics.h" />
+    <ClInclude Include="src\config.h" />
     <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\ofxDataList.h" />
+    <ClInclude Include="src\ofxHttpTypes.h" />
+    <ClInclude Include="src\ofxHttpUtils.h" />
+    <ClInclude Include="src\ofxScrollingText.h" />
+    <ClInclude Include="src\ofxTextLabel.h" />
+    <ClInclude Include="src\ofxTextLabelFbo.h" />
+    <ClInclude Include="src\ofxTrueTypeFontUC.h" />
+    <ClInclude Include="src\server.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
