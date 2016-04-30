@@ -105,5 +105,5 @@ class ofApp : public ofBaseApp
         ofColor _clearColor;
 
 	//ofxTextLabelFbo scrollText;
-	//ofxScrollingText scrollingText;
+	ofxScrollingText scrollingText;
 };
