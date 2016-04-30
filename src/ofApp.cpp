@@ -28,7 +28,7 @@ void ofApp::setup(){
 	ofRectangle bound(0,ofGetViewportHeight()-120,1920*1,32);
 	
 	//scrollText.setup(myfont,"Hello FBO Font, can you scroll or is all hope lost? Maybe we have a faster scoller here. Just in case there is some misunderstanding I would like to inform you that this line is long like silly",bound);
-	scrollingText.setup(OF_TTF_SANS);
+	scrollingText.setup("AvalonB.ttf",60);
 	scrollingText.showText("This text does not support Unicode but I dont care, it can maybe scroll");
 	
 	qsiImage = new ofImage("Qsi.png");

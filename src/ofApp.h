@@ -25,7 +25,7 @@ class ofApp : public ofBaseApp
 		void setup();
 		void update();
 		void draw();
-		~ofApp();
+		//~ofApp();
 		
 		void keyPressed(int key);
 		void keyReleased(int key);

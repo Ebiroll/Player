@@ -371,7 +371,9 @@ HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServer
 
         // ModeRequestHandler
         std::string uri=request.getURI();
+	std::cout << "Request" << uri  << "\n";
 
+	
         if (uri=="/api/mode") {
             return new ModeRequestHandler;
         } else  if(uri=="/api/save") {
