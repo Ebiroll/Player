@@ -35,6 +35,7 @@ SET(Poco_LIBRARIES
 
 INCLUDE_DIRECTORIES(
 ${Poco_INCLUDE_DIRS}
+src
 )
 
 
@@ -49,6 +50,8 @@ ENDIF(WIN32)
 SET(websock_SRCS
 #../evr/source/evrgen.c
 webmain.cpp
+src/config.cpp
+src/config.h
 src/server.cpp
 src/server.h
 )

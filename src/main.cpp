@@ -33,6 +33,8 @@ int main( ){
 
 	// Current setting
 	system("/opt/vc/bin/tvservice -s > data/current.txt");
+	
+	load_current_config();
 
     ofRunApp(new ofApp());
 
@@ -48,6 +50,7 @@ int main( ){
 		
 		sprintf(Buffer,"/opt/vc/bin/tvservice -e \"%s\"",newMode.c_str());
 		printf("Calling %s",Buffer);
+		system(Buffer);
 	} 
 		
 }

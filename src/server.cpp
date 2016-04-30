@@ -75,7 +75,7 @@ void ModeRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
   std::string type;
   std::string mode;
 
-  for (int i=0;i<params.size();i++) {
+  for (unsigned int i=0;i<params.size();i++) {
       std::pair < std::string, std::string > it=params[i];
       name=it.first;
       value=it.second;
@@ -98,39 +98,6 @@ void ModeRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
 
 }
 
-
-void AjaxRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
-{
-
-  std::string req=request.getURI();
-  std::string name;
-  std::string value;
-  printf("AJAX PAJAX\n");
-
-  std::istream& instr = request.stream();
-  instr >> value;
-
-  std::cout << "[" << value << "]" << std::endl ;
-  std::string silllyURI=std::string("http://localhost/api/save?") + value;
-  Poco::URI uri1(silllyURI);
-
-  Poco::URI::QueryParameters params = uri1.getQueryParameters();
-
-  Poco::JSON::Object config;
-
-
-  for (int i=0;i<params.size();i++) {
-      std::pair < std::string, std::string > it=params[i];
-      name=it.first;
-      value=it.second;
-      config.set(name,value);
-      std::cout << name << "=" << value << std::endl ;
-  }
-
-  config.stringify(std::cout);
-
-  std::cout << std::endl;
-
 /*
   HTMLForm form( request );
   NameValueCollection::ConstIterator i = form.begin();
@@ -143,6 +110,31 @@ void AjaxRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
       ++i;
   }
   */
+
+
+void AjaxRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
+{
+
+  std::string req=request.getURI();
+  std::string name;
+  std::string value;
+  printf("PUT CONFIG\n");
+
+  std::istream& instr = request.stream();
+  instr >> value;
+
+  std::cout << "[" << value << "]" << std::endl ;
+  std::cout << std::endl;
+
+  // Write to current config file in same dir...
+  std::string total= std::string("data/") + std::string(config.name);
+  std::ofstream of(total.c_str());
+  if (of.is_open())
+  {
+      of << value;
+  }
+
+   load_current_config();
 }
 
 void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
@@ -174,6 +166,16 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
            printf("modes_DMT\n");
            return;
        }
+
+       if ( request.getURI()  == "/config.json") {
+           std::string total= std::string("data/") + std::string(config.name);
+           filename=total;
+           type="text/json";
+           handleFileRequest(request, response);
+           printf("CURRENT-CONFIG\n");
+           return;
+       }
+
 
 
       response.setChunkedTransferEncoding(true);
@@ -211,15 +213,25 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
 
 //#ifdef TEST_CHANGE
         ostr << "  <h1>Configuration of display</h1><br />";
-        ostr << "<div id=\"output\">config ";
+        ostr << "<div id=\"output\">filename " + std::string(config.name);
         ostr << "<input type =\"button\" id = \"sb\" value=\"Save\"/> </div>";
+        // Restart button
+        ostr << "<form action='/api/restart'>";
+        ostr << "        <input type='submit' value='Submit'>";
+        ostr << "</form>";
+
         ostr << "  <canvas id=\"canv\" color=\"lightgrey\" width=\"" << config.width << "\" height=\"" << config.height << "\"></canvas>";
 //#endif
         ostr << "  <h2>Width " << config.width << "</h2><br />";
         ostr << "  <h2>Height " << config.height <<  "</h2><br />";
         ostr << "  <select id='cea'' name='ceaselect'' ><option selected='selected'>tv</option></select><input type ='button' id = 'ceaset' value='Set TV mode'/>";
-        ostr << "  <select id='dmt'' name='dmtselect'' ><option selected='selected'>monitor</option></select><input type ='button'' id = 'dmtset' value='Set Monitor mode'/>";
-
+        ostr << "  <select id='dmt'' name='dmtselect'' ><option selected='selected'>monitor</option></select><input type ='button' id = 'dmtset' value='Set Monitor mode'/>";
+        ostr << "  <br><input type ='button' id = 'getconf' value='Get current config'/>";
+        ostr << "  <textarea id = 'conf' rows='20' cols='100'>config.json<</textarea>";
+        ostr << "<form action='/api/shutdown'>";
+        ostr << "        <input type='password'' name='pass' value=''><br>";
+        ostr << "        <input type='submit' value='Submit'>";
+        ostr << "</form>";
         //        ostr << "<table>";
         //for (int i=0;i<debugArray.size();i++)
         //{
@@ -229,7 +241,7 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
         //}
         //ostr << "</tr>";
         //ostr << "</table>";
-         ostr << "</body>";
+        ostr << "</body>";
         ostr << "</html>";
     }
 
@@ -246,10 +258,12 @@ std::string readFile(std::string filename) {
   return (ret);
 }
 
+// This is the websocket solution, we use PUT ajax request instead
 void serveConfig(WebSocket &ws)
 {
 
-    std::string conf =readFile("data/test_config.json");
+    std::string total= std::string("data/") + std::string(config.name);
+    std::string conf =readFile(total.c_str());
     int flags;
     int n;
     ws.sendFrame(conf.c_str(),conf.size());
@@ -261,6 +275,7 @@ void serveConfig(WebSocket &ws)
             n = ws.receiveFrame(buffer, sizeof(buffer), flags);
             printf("got %s\n",buffer);
             std::string message=std::string(buffer,n);
+            // Dont overwrite current config, This does not work anyways...
             std::ofstream of("data/test_config.json");
             if (of.is_open())
             {
@@ -371,9 +386,19 @@ HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServer
 
         // ModeRequestHandler
         std::string uri=request.getURI();
-	std::cout << "Request" << uri  << "\n";
+        std::cout << "Request" << uri  << "\n";
 
-	
+        if (uri=="/api/shutdown") {
+            // Shuting down
+            printf("SHUT DOWN SYSTEM NOW!!");
+            // ofExit();
+        }
+        if (uri=="/api/restart") {
+            // Restart
+            printf("Restarting!!");
+        }
+
+
         if (uri=="/api/mode") {
             return new ModeRequestHandler;
         } else  if(uri=="/api/save") {

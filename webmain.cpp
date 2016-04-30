@@ -14,7 +14,7 @@
 #include <Poco/JSON/ParseHandler.h>
 #include <Poco/JSON/Query.h>
 #include "Poco/Util/ServerApplication.h"
-
+#include "config.h"
 
 
 using Poco::Util::ServerApplication;
@@ -22,7 +22,6 @@ using Poco::Util::Application;
 using namespace Poco::JSON;
 using namespace Poco::Dynamic;
 
-conf config;
 
 
 void setNewMode(const char *mode) {
@@ -41,17 +40,6 @@ class WebSocketServer: public Poco::Util::ServerApplication
 };
 
 
-std::string readFileToString(std::string filename) {
-    std::string ret;
-    std::ifstream t(filename.c_str() /* "data/lib/jquery-2.2.3.min.js"*/);
-    if (t.good())
-      {
-        std::stringstream buffer;
-        buffer << t.rdbuf();
-        ret = buffer.str();
-      }
-  return (ret);
-}
 
 void parseModesFile() {
 
@@ -80,10 +68,9 @@ void parseModesFile() {
 
       Query myQuery(result);
 
-      Var topic=myQuery.find("code");
-      int value = topic.convert<int>();
-      //app.logger().information(Poco::format("code %d.",value));
-      printf("Value=%d\n",value);
+      //Var topic=myQuery.find("code");
+      //int value = topic.convert<int>();
+      //printf("Value=%d\n",value);
     } catch (...)
     {
         printf("Exception\n");
@@ -106,6 +93,7 @@ int main(int argc,char *argv[] ){
     config.width=800;
     config.height=600;
 
+    load_current_config();
 
     gSocketServer=new  ServerSocket(10020);
     // set-up a HTTPServer instance

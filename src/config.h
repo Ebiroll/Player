@@ -8,6 +8,7 @@
                {"x":0,"y":405,"w":167,"h":103,"name":"no_smoke","color":"red"},
                {"x":20,"y":522,"w":769,"h":73,"name":"scroll","color":"cyan"}],
  */
+#include <string>
 
 typedef  enum {
   video=0,
@@ -18,10 +19,36 @@ typedef  enum {
   scroll  
 } e_rect;
 
-typedef struct conf {
+#ifdef DEFINE_NAMES
+const char *names[]={
+    "video",
+    "logo",
+    "label",
+    "list",
+    "no_smoke",
+    "scroll"
+}
+#endif
+
+typedef struct  {
+  int x;
+  int y;
+  int w;
+  int h;
+  char name[128];
+  char color[128];
+} rect;
+
+typedef struct  {
   char name[256];
-  int width;
-  int height;
-};
+  int  width;
+  int  height;
+  rect r[32];
+} conf;
+
+extern conf config;
 
 
+void load_current_config();
+
+std::string readFileToString(std::string filename);

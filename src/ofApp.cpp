@@ -1,12 +1,11 @@
 ﻿#include "ofApp.h"
 #include "ofxTextLabel.h"
-
+#include "config.h"
 
 bool doLoadNextMovie = false;
 
 unsigned short     gPort=10010;
 
-conf config;
 
 //ofApp()::~ofApp()
 //{
@@ -286,7 +285,7 @@ void ofApp::draw(){
 	myfont->drawString("Hang Nadim Batam Airport", 250, 50);
 	ofSetColor(255);
 
-	da4fidImage->draw(10, 20, 100, 100); //scale
+	da4fidImage->draw(config.r[logo].x, config.r[logo].y, config.r[logo].w, config.r[logo].h); //scale
 
 	int width = 0.9 * ofGetViewportWidth() / 3;
 	int height = ofGetViewportHeight() / 8;

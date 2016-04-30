@@ -6,7 +6,19 @@ function wsurl(s) {
     return ((l.protocol === "https:") ? "wss://" : "ws://") + l.host + l.pathname + s;
 }
 
-
+jQuery.extend({
+    putJSON: function( url, data, callback ){
+        return $.ajax({
+            type: 'put',
+            url: url,
+            processData: false,
+            data: data,
+            success: callback,
+            contentType: 'application/json',
+            dataType:    'json'
+        });
+    }
+});
 
 $(document).ready(function() {
       $.getJSON("/modes_CEA.json", function(config){
@@ -17,7 +29,7 @@ $(document).ready(function() {
             options += '<option ' + ' value="' + config[i].code + '">' + config[i].code + '_'  + config[i].width + '*' + config[i].height +  "-" + config[i].rate +  "-" + config[i].scan + '</option>';
         }
         $("#cea").html(options);
-        console.log(options);
+        //console.log(options);
       });
 
       $.getJSON("/modes_DMT.json", function(config){
@@ -26,30 +38,29 @@ $(document).ready(function() {
             options += '<option value="' + config[i].code + '">' + config[i].code + '_'  + config[i].width + '*' + config[i].height + "-" + config[i].rate +  "-" + config[i].scan + '</option>';
         }
         $("#dmt").html(options);
-        console.log(options);
+        //console.log(options);
       });
 
 
-    // put your Javascript here
-      var socket = new WebSocket(wsurl("socket/config/"));
 
+      // Websockets dont work on the arm-pi
+      //var socket = new WebSocket(wsurl("socket/config/"));
 
-      socket.onopen = function(){
-          console.log("Socket has been opened!");
-      }
+      //socket.onopen = function(){
+      //    console.log("Socket has been opened!");
+      //}
 
+      //socket.onmessage = function(msg){
+      //    console.log("socket msg",msg);
+      //}
 
-      socket.onmessage = function(msg){
-          console.log("socket msg",msg);
-      }
+      //socket.onmessage = function(msg){
+      //    console.log("socket msg",msg);
+      //}
 
-      socket.onmessage = function(msg){
-          console.log("socket msg",msg);
-      }
-
-      socket.onclose = function(){
-          console.log('Socket Status: '+socket.readyState+' (Closed)');
-      }
+      //socket.onclose = function(){
+      //    console.log('Socket Status: '+socket.readyState+' (Closed)');
+      //}
 
 
       var i=0;
@@ -57,7 +68,7 @@ $(document).ready(function() {
 var canvas = document.getElementById('canv'),
     ctx = canvas.getContext('2d'),   
     mulrect = [{"x":176,"y":64,"w":600,"h":400,"name":"video","color":"blue"},
-               {"x":0,"y":1,"w":71,"h":57,"name":"logo","color":"grey"},
+               {"x":0,"y":0,"w":71,"h":57,"name":"logo","color":"grey"},
                {"x":82,"y":0,"w":706,"h":61,"name":"label","color":"cyan"},
                {"x":3,"y":66,"w":166,"h":329,"name":"list","color":"green"},
                {"x":0,"y":405,"w":167,"h":103,"name":"no_smoke","color":"red"},
@@ -69,6 +80,13 @@ var canvas = document.getElementById('canv'),
     console.log('canv',canv);
 
 
+   $.getJSON("/config.json", function(config){
+     //mulrect=JSON.parse(config);
+     mulrect=config;
+     console.log("----------------------------");
+     console.log(config);
+     draw();
+   });
 
 
 
@@ -86,37 +104,44 @@ function init() {
                   "data": { "type": "CEA", "mode" : $( "#cea" ).val() },
                   "complete": function (response) {
                                   console.log('complete');
-
-                                  $('#output').html(response.responseText);
+                                  //$('#output').html(response.responseText);
                               }
        });
     });
 
+      $("#getconf").click(function(e){
+        var str=JSON.stringify(mulrect,undefined,2);
+        document.getElementById('conf').innerHTML = str
+        // $('#conf').innerHtml(str);
+      });
+
+
       $("#sb").click(function(e){
          test = { config : mulrect };
-         console.log('Socket Status: '+socket.readyState+' ??');
+         //console.log('Socket Status: '+socket.readyState+' ??');
          // Only send on status open
-         socket.send(JSON.stringify(mulrect));
+         //socket.send(JSON.stringify(mulrect));
          console.log('click');
 
-         /*
+
 
          function saveConfig() {
-             $('#output').html("Making AJAX call");
+             //$('#output').html("Making AJAX call");
              $.ajax({
-                        "dataType": 'json',
-                        "type": "POST",
-                        "url": "/api/save",
-                        "data": test,
+                        "dataType"    : 'json',
+                        "type"        : "put",
+                        "url"         : "/api/save",
+                        contentType   : 'application/json',
+                        "processData" : false,
+                        "data":  JSON.stringify(mulrect) ,
                         "complete": function (response) {
-                                        console.log('complete');
-
-                                        $('#output').html(response.responseText);
-                                    }
+                            console.log('complete save');
+                            //$('#output').html(response.responseText);
+                        }
                     });
          };
          saveConfig();
-         */
+
    });
 
 
