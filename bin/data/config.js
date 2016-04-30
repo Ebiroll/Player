@@ -9,8 +9,29 @@ function wsurl(s) {
 
 
 $(document).ready(function() {
+      $.getJSON("/modes_CEA.json", function(config){
+        var options = '';
+        for (var i = 0; i < config.length; i++) {
+            var wid=config[i].width;
+            var hig=config[i].height;
+            options += '<option ' + ' value="' + config[i].code + '">' + config[i].code + '_'  + config[i].width + '*' + config[i].height +  "-" + config[i].rate +  "-" + config[i].scan + '</option>';
+        }
+        $("#cea").html(options);
+        console.log(options);
+      });
+
+      $.getJSON("/modes_DMT.json", function(config){
+        var options = '';
+        for (var i = 0; i < config.length; i++) {
+            options += '<option value="' + config[i].code + '">' + config[i].code + '_'  + config[i].width + '*' + config[i].height + "-" + config[i].rate +  "-" + config[i].scan + '</option>';
+        }
+        $("#dmt").html(options);
+        console.log(options);
+      });
+
+
     // put your Javascript here
-      var socket = new WebSocket(wsurl("/socket/config/"));
+      var socket = new WebSocket(wsurl("socket/config/"));
 
 
       socket.onopen = function(){
@@ -35,13 +56,13 @@ $(document).ready(function() {
 
 var canvas = document.getElementById('canv'),
     ctx = canvas.getContext('2d'),   
-    mulrect = [{"x":0,"y":1,"w":71,"h":57,"name":"logo","color":"grey"},
+    mulrect = [{"x":176,"y":64,"w":600,"h":400,"name":"video","color":"blue"},
+               {"x":0,"y":1,"w":71,"h":57,"name":"logo","color":"grey"},
                {"x":82,"y":0,"w":706,"h":61,"name":"label","color":"cyan"},
                {"x":3,"y":66,"w":166,"h":329,"name":"list","color":"green"},
-               {"x":176,"y":64,"w":600,"h":400,"name":"video","color":"blue"},
                {"x":0,"y":405,"w":167,"h":103,"name":"no_smoke","color":"red"},
                {"x":20,"y":522,"w":769,"h":73,"name":"scroll","color":"cyan"}],
-    handlesSize = 8,
+    handlesSize = 16,
     currentHandle = false,
     drag = false;
     currentSel = 0;
@@ -55,6 +76,22 @@ function init() {
     canvas.addEventListener('mousedown', mouseDown, false);
     canvas.addEventListener('mouseup', mouseUp, false);
     canvas.addEventListener('mousemove', mouseMove, false);
+
+    $("#ceaset").click(function(e){
+       //$("#canv").
+       $.ajax({
+                  "dataType": 'json',
+                  "type": "POST",
+                  "url": "/api/mode",
+                  "data": { "type": "CEA", "mode" : $( "#cea" ).val() },
+                  "complete": function (response) {
+                                  console.log('complete');
+
+                                  $('#output').html(response.responseText);
+                              }
+       });
+    });
+
       $("#sb").click(function(e){
          test = { config : mulrect };
          console.log('Socket Status: '+socket.readyState+' ??');
