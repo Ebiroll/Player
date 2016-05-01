@@ -21,15 +21,13 @@ std::string text = "exploding text";
 //--------------------------------------------------------------
 void ofApp::setup(){
 	
-	// ofAppEGLWindow *test=this;
-	// test->setVerticalSync(true);
-        //ofSetVerticalSync(true);
+        ofSetVerticalSync(true);
 	ofTrueTypeFont::setGlobalDpi(72);
 	myfont = new ofTrueTypeFont;
    //ucFont.loadFont("AvalonB.ttf", 20, true, true);
 	//myfont->loadFont(OF_TTF_SANS, 20);
 	myfont->loadFont("AvalonB.ttf", 32);
-	font.loadFont("AvalonB.ttf", 40, true, true,true);
+	font.setup("AvalonB.ttf", 1.0, 1024, false, 8, 1.0);
 	//gui->setFont("AvalonB.ttf", 20);
 
     //xplodingString = new ofxExplodingString( &font, ofColor(255) );
@@ -37,7 +35,7 @@ void ofApp::setup(){
 	ofRectangle bound(0,ofGetViewportHeight()-120,1920*1,32);
 	
 	//scrollText.setup(myfont,"Hello FBO Font, can you scroll or is all hope lost? Maybe we have a faster scoller here. Just in case there is some misunderstanding I would like to inform you that this line is long like silly",bound);
-	scrollingText.setup("AvalonB.ttf",config.r[scroll].h/2,config.r[scroll].x, config.r[scroll].y+(config.r[scroll].h/2),config.r[scroll].w,config.r[scroll].h);
+	scrollingText.setup("AvalonB.ttf",28,config.r[scroll].x, config.r[scroll].y+(config.r[scroll].h/2),config.r[scroll].w,config.r[scroll].h);
 	scrollingText.showText(config.r[scroll].text);
 	scrollingText.setSpeed(4.0);
 
@@ -336,7 +334,8 @@ void ofApp::draw(){
 	wWidth=ofGetViewportWidth();
 	wHeight=ofGetViewportHeight();	
 
-    font.draw(config.r[explode].text, config.r[explode].x, config.r[explode].y);
+	float fsize=40.0;
+        font.draw(config.r[explode].text,fsize, config.r[explode].x, config.r[explode].y);
 	//xplodingString->draw();
 
 
