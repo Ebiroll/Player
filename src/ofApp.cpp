@@ -324,7 +324,7 @@ void ofApp::update(){
 void ofApp::draw(){
 	//ofDrawBitmapString("Hello World", 10, 10);
         //static int times=0;
-	myfont->drawString("Hang Nadim Batam Airport", config.r[label].x, config.r[label].y + (config.r[label].h/2);
+  myfont->drawString("Hang Nadim Batam Airport", config.r[label].x, config.r[label].y + (config.r[label].h/2));
 	ofSetColor(255);
 
 	da4fidImage->draw(config.r[logo].x, config.r[logo].y, config.r[logo].w, config.r[logo].h); //scale
@@ -334,7 +334,7 @@ void ofApp::draw(){
 	wWidth=ofGetViewportWidth();
 	wHeight=ofGetViewportHeight();	
 
-    font->drawString(text, config.r[exploding].x, config.r[exploding].y);
+        font.drawString(text, config.r[explode].x, config.r[explode].y);
 	xplodingString->draw();
 
 

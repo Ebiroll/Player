@@ -21,7 +21,7 @@ void ofxDataList::setup(int x, int y, int w , int h,int numDisplayRows, int numD
 	cellWidth = width / numDisplayCols;  
 	cellHeight = height / (numDisplayRows + 1);
 
-    setPosition(x, y);
+	setPosition(x, y,w,h);
     setTopRow(0);
     setLeftCol(0);
     selectRow(0);

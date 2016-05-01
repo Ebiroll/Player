@@ -1,6 +1,9 @@
 #include "ofMain.h"
 #include "ofApp.h"
-#include <stdlib.h> 
+#include <stdlib.h>
+//#include <linux/fb.h>
+
+
 std::string newMode;
 
 void setNewMode(const char *mode) {
@@ -25,6 +28,16 @@ void run() {
 
 //========================================================================
 int main( ){
+
+  /*
+    This was a shot grom the hip... :-P
+  int zero = 0;
+  int fbdev = open("/dev/fb0", O_RDWR);  
+  ioctl(fbdev, FBIO_WAITFORVSYNC, &zero);
+  */
+  
+
+  {
 	ofSetupOpenGL(1280,1024, OF_WINDOW);			// <-------- setup the GL context  1920,1080
 	// TV
 	system("/opt/vc/bin/tvservice -j -m CEA > data/modes_CEA.json");
@@ -51,6 +64,7 @@ int main( ){
 		sprintf(Buffer,"/opt/vc/bin/tvservice -e \"%s\"",newMode.c_str());
 		printf("Calling %s",Buffer);
 		system(Buffer);
-	} 
+	}
+    }
 		
 }
