@@ -182,8 +182,8 @@ void ofxDataList::draw()
             //ofBackground(ofColor::lightGray);
         }
 
-        if (numCols > j) {
-            ofDrawRectRounded(0,  cellHeight * j , width, cellHeight, 10);
+        if (numCols+1 > j) {
+	    //ofDrawRectRounded(0,  cellHeight * j , width, cellHeight, 10);
             ofSetColor(255);
             //ucFont.drawString(linesForDisplay[j], 60, 190 + height * j);
         }

@@ -87,7 +87,11 @@ void ofxScrollingText::draw(){
     ofSetColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a * alpha);
     //ofRect(x, y, width, height);
     ofSetColor(fontColor.r, fontColor.g, fontColor.b, fontColor.a * alpha);
-    font.drawString(textString, fontsize ,textPosition.x, textPosition.y + height - (height - font.stringHeight(textString))/2);
+    float x=textPosition.x;
+    float y=textPosition.y + height - (height - font.stringHeight(textString))/2;
+    float fsize=fontsize;
+    //const std::string tmp=textString;
+    font.draw(textString,fsize,x,y);
     
     //font.draw(
 	//			  demoText,	//text to draw
