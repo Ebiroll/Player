@@ -9,6 +9,7 @@
 
 #include "ofMain.h"
 #include "ofxTrueTypeFontUC.h"
+#include "ofxFontStash.h"
 
 class ofxScrollingText{
 public:
@@ -40,7 +41,9 @@ private:
     // private instance
     //static ofxScrollingText* mIns;
     
-    ofxTrueTypeFontUC font;
+    ofxFontStash font;
+    int fontsize;
+    //ofxTrueTypeFontUC font;
     bool isVisible;
     bool isPlaying;
     bool isScroll;

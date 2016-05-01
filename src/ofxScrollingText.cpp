@@ -30,6 +30,7 @@ ofxScrollingText::ofxScrollingText(){
     textPosition.y = ofGetHeight() * 0.8;
     width = ofGetWidth();
     height = ofGetHeight()/10;
+    
 }
 
 //--------------------------------------------------------------
@@ -39,7 +40,10 @@ ofxScrollingText::~ofxScrollingText(){
 
 //--------------------------------------------------------------
 void ofxScrollingText::setup(string _fontPath, int _fontSize,int x, int y, int w, int h){
-    font.loadFont(_fontPath, _fontSize, true, true);
+    //font.loadFont(_fontPath, _fontSize, true, true);
+    font.setup("Vera.ttf", 1.0, 1024, false, 8, 1.0);
+    fontsize=_fontSize;
+   
 	height = h; // _fontSize * 2;
 	x = x;
 	y = y;
@@ -83,7 +87,15 @@ void ofxScrollingText::draw(){
     ofSetColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a * alpha);
     //ofRect(x, y, width, height);
     ofSetColor(fontColor.r, fontColor.g, fontColor.b, fontColor.a * alpha);
-    font.drawString(textString, textPosition.x, textPosition.y + height - (height - font.stringHeight(textString))/2);
+    font.drawString(textString, fontsize ,textPosition.x, textPosition.y + height - (height - font.stringHeight(textString))/2);
+    
+    //font.draw(
+	//			  demoText,	//text to draw
+	//			  fontSize,	//font size
+	//			  x,		//x coord where to draw
+	//			  y			//y coord where to draw
+	//		  );
+    
     ofPopStyle();
 }
 
