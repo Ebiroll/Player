@@ -254,7 +254,7 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
 	
-  scrollingText.update(config.r[scroll].x, config.r[scroll].y+(config.r[scroll].h/2));
+  scrollingText.update(config.r[scroll].x, config.r[scroll].y+(config.r[scroll].h/2),config.r[scroll].w,config.r[scroll].h);
 	//scrollText.update();
     dataList.setPosition(config.r[datalist].x, config.r[datalist].y, config.r[datalist].w, config.r[datalist].h);
 
