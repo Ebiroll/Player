@@ -90,8 +90,8 @@ int main(int argc,char *argv[] ){
 
     parseModesFile();
 
-    config.width=800;
-    config.height=600;
+    config.width=1920;
+    config.height=1280;
 
     load_current_config();
 

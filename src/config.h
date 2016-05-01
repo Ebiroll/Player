@@ -41,6 +41,8 @@ typedef struct  {
   int h;
   char name[128];
   char color[128];
+  char text[512];
+ 
 } rect;
 
 typedef struct  {

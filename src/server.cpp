@@ -46,9 +46,9 @@ try {
     }
  }
  catch(...)
-   {
-     printf("jquery read error");
-   }
+ {
+     printf("file read error");
+ }
 
   std::ostream& ostr = response.send();
   ostr << message;
@@ -171,6 +171,7 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
 
        if ( request.getURI()  == "/config.json") {
            std::string total= std::string("data/") + std::string(config.name);
+           std::cout << total;
            filename=total;
            type="text/json";
            handleFileRequest(request, response);

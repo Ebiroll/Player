@@ -99,10 +99,12 @@ void load_current_config()
           Object::Ptr object = arr->getObject(i);
           std::string name=object->getValue<std::string>("name");
           std::string color=object->getValue<std::string>("color");
+          std::string text=object->getValue<std::string>("text");
           config.r[i].x=object->getValue<int>("x");
           config.r[i].y=object->getValue<int>("y");
           config.r[i].w=object->getValue<int>("w");
           config.r[i].h=object->getValue<int>("h");
+          strcpy(config.r[i]text,text.c_str());         
           strcpy(config.r[i].name,name.c_str());
           strcpy(config.r[i].color,color.c_str());
 

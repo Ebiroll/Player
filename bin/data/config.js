@@ -84,7 +84,10 @@ var canvas = document.getElementById('canv'),
 
 
    $.getJSON("/config.json", function(config){
-     mulrect=JSON.parse(config);
+     console.log("----------------------------");
+     console.log(config);
+     mulrect=config;
+     console.log("----------------------------");
      //mulrect=config;
      console.log("----------------------------");
      console.log(config);
@@ -150,9 +153,11 @@ function init() {
 
       $("#lb").click(function(e){
          $.getJSON("/config.json", function(config){
-           mulrect=JSON.parse(config);
-           console.log("----------------------------");
+           console.log("------------ LOAD ----------------");
+           //mulrect=JSON.parse(config);
+           mulrect=config;
            console.log(config);
+           console.log("------------ LOAD ----------------");
            draw();
          });
 
