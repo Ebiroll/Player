@@ -61,7 +61,7 @@ void ofxScrollingText::update(int xp, int yp){
                 isVisible = false;
             }
         }else{
-            textPosition.x = width / 2 - font.stringWidth(textString) / 2;
+            textPosition.x = width  - font.stringWidth(textString) ;
         }
     }else{
         if( alpha > 0.01){
