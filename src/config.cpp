@@ -73,6 +73,10 @@ void set_default() {
     config.r[label].h=40;
     strcpy(config.r[label].text,"Hang Nadim Batam Airport");
 
+    config.r[scroll].x=10;
+    config.r[scroll].y=300;
+    config.r[scroll].w=800;
+    config.r[scroll].h=60;
 
     config.r[no_smoke].x=200;
     config.r[no_smoke].y=200;

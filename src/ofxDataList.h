@@ -76,6 +76,10 @@ private:
     vector<vector<string> > entries;
     vector<vector<float> > entriesF;
     
+    //ofFbo _fbo;
+    //ofFbo::Settings _fboSettings;
+    //ofColor _clearColor;
+    
     ofEvent<void> changeEvent;
 };
 

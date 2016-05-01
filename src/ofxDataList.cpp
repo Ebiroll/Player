@@ -169,8 +169,38 @@ void ofxDataList::draw()
     ofPushStyle();
     ofPushMatrix();
     ofTranslate(x, y);
-    
+    for (int j = 0; j < numRows; j++) {
+        if (j % 2 == 0) {
+            ofSetColor(ofColor(40, 40, 40));
+            //ofClear(40,0);
+            //ofBackground(ofColor(40, 40, 40));
+        }
+        else
+        {
+            ofSetColor(ofColor::darkGrey);
+            //ofClear(255,0);
+            //ofBackground(ofColor::lightGray);
+        }
+
+        if (linesForDisplay.size() > j) {
+            ofDrawRectRounded(0,  cellHeight * j , width, height, 10);
+            ofSetColor(255);
+            //ucFont.drawString(linesForDisplay[j], 60, 190 + height * j);
+        }
+    }
+    ofTranslate(0, cellHeight);
+    for (int r = 0; r < numRows; r++) {
+        for (int c = 0; c < numCols; c++) {
+            float cy1 = (r + 1) * cellHeight;
+            float cx = c * cellWidth;
+            ofSetColor(255);
+            ofNoFill();
+            ofDrawBitmapString(ofToString(entries[topRow + r][leftCol + c]), cx + 1, cy + cellHeight - 1);
+        }
+    }
+
     // draw header
+    /*
     for (int c = 0; c < numCols; c++) {
         float cx = c * cellWidth;
         ofFill();
@@ -182,8 +212,9 @@ void ofxDataList::draw()
         ofSetColor(255);
         ofDrawBitmapString(ofToString(headers[leftCol + c]), cx + 1, cellHeight - 1);
     }
-    
+    */
     // draw cells
+    /*
     ofTranslate(0, cellHeight);
     for (int r = 0; r < numRows; r++) {
         for (int c = 0; c < numCols; c++) {
@@ -209,6 +240,7 @@ void ofxDataList::draw()
             ofDrawBitmapString(ofToString(topRow+ r+1), -20, cy1-3);
         }
     }
+    */
     
     ofPopMatrix();
     ofPopStyle();
