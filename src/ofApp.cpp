@@ -17,18 +17,23 @@ void ofApp::onScrolltextFinnish()
 
 }
 
+std::string text = "exploding text";
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+	
+	// ofAppEGLWindow *test=this;
+	// test->setVerticalSync(true);
 	
 	ofTrueTypeFont::setGlobalDpi(72);
 	myfont = new ofTrueTypeFont;
 	ucFont.loadFont("AvalonB.ttf", 20, true, true);
 	//myfont->loadFont(OF_TTF_SANS, 20);
 	myfont->loadFont("AvalonB.ttf", 32);
-	font.loadFont("AvalonB.ttf", 40);
+	font.loadFont("AvalonB.ttf", 40, true, true,true);
 	//gui->setFont("AvalonB.ttf", 20);
 
+    xplodingString = new ofxExplodingString( &font, ofColor(255) );
 
 	ofRectangle bound(0,ofGetViewportHeight()-120,1920*1,32);
 	
@@ -251,8 +256,11 @@ void ofApp::update(){
 	
 	scrollingText.update();
 	//scrollText.update();
-   dataList.setPosition(config.r[datalist].x, config.r[datalist].y, config.r[datalist].w, config.r[datalist].h);
+    dataList.setPosition(config.r[datalist].x, config.r[datalist].y, config.r[datalist].w, config.r[datalist].h);
 
+    xplodingString->update(0.01666);
+	
+	
 #ifndef NO_OMX
 	if (doLoadNextMovie) 
 	{
@@ -316,7 +324,7 @@ void ofApp::update(){
 void ofApp::draw(){
 	//ofDrawBitmapString("Hello World", 10, 10);
         //static int times=0;
-	myfont->drawString("Hang Nadim Batam Airport", config.r[label].x, config.r[label].y);
+	myfont->drawString("Hang Nadim Batam Airport", config.r[label].x, config.r[label].y + (config.r[label].h/2);
 	ofSetColor(255);
 
 	da4fidImage->draw(config.r[logo].x, config.r[logo].y, config.r[logo].w, config.r[logo].h); //scale
@@ -325,6 +333,9 @@ void ofApp::draw(){
 	int height = ofGetViewportHeight() / 8;
 	wWidth=ofGetViewportWidth();
 	wHeight=ofGetViewportHeight();	
+
+   font.drawString(text, config.r[exploding].x, config.r[exploding].y);
+	xplodingString->draw();
 
 
 

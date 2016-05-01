@@ -7,7 +7,7 @@
 #include "server.h"
 #include "ofxScrollingText.h"
 #include "ofxDataList.h"
-
+#include "ofxExplodingString.h"
 
 #define NO_OMX
 
@@ -110,4 +110,6 @@ class ofApp : public ofBaseApp
 	//ofxTextLabelFbo scrollText;
 	ofxScrollingText scrollingText;
 	ofxDataList  dataList;
+	
+	ofxExplodingString *xplodingString;
 };

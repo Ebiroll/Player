@@ -16,7 +16,9 @@ typedef  enum {
   label,
   datalist,
   no_smoke,
-  scroll  
+  scroll,
+  explode,
+  t_clock
 } e_rect;
 
 #ifdef DEFINE_NAMES
@@ -26,7 +28,9 @@ const char *names[]={
     "label",
     "list",
     "no_smoke",
-    "scroll"
+    "scroll",
+    "explode",
+    "clock",
 }
 #endif
 

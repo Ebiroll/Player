@@ -34,7 +34,27 @@ conf config;
 
 std::string getSelectedConfig()
 {
-    std::string ret="CEA_4_config.json";
+    std::string ret="_config.json";    
+    std::string current=readFileToString("data/current.txt");
+    std::string type="CEA";
+    
+    if (current.find("CEA") != std::string::npos) {
+      type="CEA";
+    }  
+    // DMT
+    if (current.find("DMT") != std::string::npos) {
+      type="DMT";
+    }  
+    int startpos=current.find("(");
+    int endpos=current.find(")");
+    if (startpos!= std::string::npos && endpos!= std::string::npos)
+    {
+        std::string mode=current.substr(startpos+1,endpos-startpos-1);
+        ret = type + "_" + mode + "_config.json";
+        std::cout << "Config file:" << ret << '\n';
+
+    }
+    // (4)
     // Todo parse   data/current.txt
     strcpy(config.name,ret.c_str());
     return ret;

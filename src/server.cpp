@@ -216,11 +216,24 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
 //#ifdef TEST_CHANGE
         ostr << "  <h1>Configuration of display</h1><br />";
         ostr << "<div id=\"output\">filename " + std::string(config.name);
-        ostr << "<input type =\"button\" id = \"sb\" value=\"Save\"/> </div>";
+        ostr << "<input type =\"button\" id = \"sb\" value=\"Save\"/> ";
+        ostr << "<input type ='button'' id = 'lb'' value='Load'/> ";
+        ostr << "<input type ='button'' id = 'def'' value='Default'/> ";
         // Restart button
-        ostr << "<form action='/api/restart'>";
-        ostr << "        <input type='submit' value='Restart'>";
-        ostr << "</form>";
+        ostr << "  <select id='current'' name='ceaselect'' >";
+        ostr << "  <option selected='selected'>video</option>";
+        ostr << "  <option selected='selected'>logo</option>";
+        ostr << "  <option selected='selected'>label</option>";
+        ostr << "  <option selected='selected'>list</option>";
+        ostr << "  <option selected='selected'>no_smoke</option>";
+        ostr << "  <option selected='selected'>scroll</option>";
+        ostr << "  <option selected='selected'>explode</option>";
+        ostr << "  <option selected='selected'>clock</option>";
+
+        ostr << "  </select><br /> </div>";
+        //ostr << "<form action='/api/restart'>";
+        //ostr << "        <input type='submit' value='Restart'>";
+        //ostr << "</form>";
 
         ostr << "  <canvas id=\"canv\" color=\"lightgrey\" width=\"" << config.width << "\" height=\"" << config.height << "\"></canvas>";
 //#endif
