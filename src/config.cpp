@@ -61,13 +61,19 @@ std::string getSelectedConfig()
 }
 
 void set_default() {
-    config.r[logo].x=0;
-    config.r[logo].y=0;
-    config.r[logo].w=20;
-    config.r[logo].h=20;
+    config.r[logo].x=100;
+    config.r[logo].y=100;
+    config.r[logo].w=40;
+    config.r[logo].h=40;
 
-    config.r[no_smoke].x=20;
-    config.r[no_smoke].y=20;
+    config.r[label].x=200;
+    config.r[label].y=100;
+    config.r[label].w=40;
+    config.r[label].h=40;
+
+
+    config.r[no_smoke].x=200;
+    config.r[no_smoke].y=200;
     config.r[no_smoke].w=20;
     config.r[no_smoke].h=20;
 

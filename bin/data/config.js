@@ -101,6 +101,21 @@ function init() {
     canvas.addEventListener('mouseup', mouseUp, false);
     canvas.addEventListener('mousemove', mouseMove, false);
 
+   $('#currtext').change(function(){
+       var input = $("#currtext").val();
+       //mulrect[valueSelected].text="\"" + input + "\"";
+       console.log(input);
+   });
+
+    $("#current").change(function(e){
+         var optionSelected = $(this).find("option:selected");
+             var valueSelected  = optionSelected.val();
+             var textSelected   = optionSelected.text();
+             console.log(valueSelected,textSelected);
+             currentSel=valueSelected
+             //document.getElementById('currtext').text = mulrect[valueSelected].text;
+     });
+
     $("#ceaset").click(function(e){
        //$("#canv").
        $.ajax({

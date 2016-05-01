@@ -47,7 +47,7 @@ void ofxScrollingText::setup(string _fontPath, int _fontSize,int x, int y, int w
 }
 
 //--------------------------------------------------------------
-void ofxScrollingText::update(int xp, int yp){
+void ofxScrollingText::update(int xp, int yp,int w,int h){
     x=xp;
     y=yp;
     //width = ofGetWidth();

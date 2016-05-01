@@ -221,17 +221,17 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
         ostr << "<input type ='button'' id = 'lb'' value='Load'/> ";
         ostr << "<input type ='button'' id = 'def'' value='Default'/> ";
         // Restart button
-        ostr << "  <select id='current'' name='ceaselect'' >";
-        ostr << "  <option selected='selected'>video</option>";
-        ostr << "  <option selected='selected'>logo</option>";
-        ostr << "  <option selected='selected'>label</option>";
-        ostr << "  <option selected='selected'>list</option>";
-        ostr << "  <option selected='selected'>no_smoke</option>";
-        ostr << "  <option selected='selected'>scroll</option>";
-        ostr << "  <option selected='selected'>explode</option>";
-        ostr << "  <option selected='selected'>clock</option>";
-
+        ostr << "  <select id='current'' name='rectselect' >";
+        ostr << "  <option value='0'>video</option>";
+        ostr << "  <option value='1'>logo</option>";
+        ostr << "  <option value='2'>label</option>";
+        ostr << "  <option value='3'>list</option>";
+        ostr << "  <option value='4'>no_smoke</option>";
+        ostr << "  <option value='5'>scroll</option>";
+        ostr << "  <option value='6'>explode</option>";
+        ostr << "  <option value='7'>clock</option>";
         ostr << "  </select><br /> </div>";
+        ostr << "  <textarea id = 'currtext' rows='2' cols='128'></textarea>";
         //ostr << "<form action='/api/restart'>";
         //ostr << "        <input type='submit' value='Restart'>";
         //ostr << "</form>";
