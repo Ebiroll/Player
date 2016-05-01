@@ -73,7 +73,7 @@ var canvas = document.getElementById('canv'),
                {"x":82,"y":0,"w":706,"h":61,"name":"label","color":"cyan","text":"",tsize:24},
                {"x":3,"y":66,"w":166,"h":329,"name":"list","color":"green","text":"",tsize:24},
                {"x":0,"y":405,"w":167,"h":103,"name":"no_smoke","color":"red","text":"",tsize:24},
-               {"x":5,"y":589,"w":785,"h":-53,"name":"scroll","color":"green","text":" ",tsize:24},
+               {"x":5,"y":589,"w":785,"h":-53,"name":"scroll","color":"green","text":"%20",tsize:24},
                {"x":180,"y":498,"w":559,"h":35,"name":"explode","color":"orange","text":"",tsize:24},
                {"x":693,"y":4,"w":83,"h":51,"name":"clock","color":"yellow","text":"",tsize:24}
     ],
@@ -176,7 +176,7 @@ function init() {
                      {"x":40,"y":0,"w":350,"h":30,"name":"label","color":"cyan","text":"",tsize:24},
                      {"x":5,"y":30,"w":100,"h":160,"name":"list","color":"green","text":"",tsize:24},
                      {"x":0,"y":205,"w":100,"h":50,"name":"no_smoke","color":"red","text":"",tsize:24},
-                     {"x":90,"y":210,"w":250,"h":30,"name":"scroll","color":"green","text":" ",tsize:24},
+                     {"x":90,"y":210,"w":250,"h":30,"name":"scroll","color":"green","text":"%20",tsize:24},
                      {"x":100,"y":250,"w":250,"h":30,"name":"explode","color":"orange","text":"",tsize:24},
                      {"x":350,"y":5,"w":40,"h":25,"name":"clock","color":"yellow","text":"",tsize:24}];
          draw();
