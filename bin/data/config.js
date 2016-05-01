@@ -64,7 +64,8 @@ $(document).ready(function() {
 
 
       var i=0;
-
+    var textIxSel = 0;
+    
 var canvas = document.getElementById('canv'),
     ctx = canvas.getContext('2d'),   
     mulrect = [{"x":176,"y":64,"w":600,"h":400,"name":"video","color":"blue","text":"",tsize:24},
@@ -80,6 +81,7 @@ var canvas = document.getElementById('canv'),
     currentHandle = false,
     drag = false;
     currentSel = 0;
+
     console.log('canv',canv);
 
 
@@ -103,7 +105,7 @@ function init() {
 
    $('#currtext').change(function(){
        var input = $("#currtext").val();
-       //mulrect[valueSelected].text="\"" + input + "\"";
+       mulrect[textIxSel].text=String(input);
        console.log(input);
    });
 
@@ -112,8 +114,8 @@ function init() {
              var valueSelected  = optionSelected.val();
              var textSelected   = optionSelected.text();
              console.log(valueSelected,textSelected);
-             currentSel=valueSelected
-             //document.getElementById('currtext').text = mulrect[valueSelected].text;
+             textIxSel=Number(valueSelected)
+             document.getElementById('currtext').innerText = mulrect[valueSelected].text;
      });
 
     $("#ceaset").click(function(e){
