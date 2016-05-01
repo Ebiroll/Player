@@ -14,7 +14,7 @@ class ofxScrollingText{
 public:
     static ofxScrollingText* instance();
     void setup(string _fontPath, int _fontSize, int x, int y, int w, int h);
-    void update();
+    void update(int x,int y);
     void draw();
     
     void showText(string _message);

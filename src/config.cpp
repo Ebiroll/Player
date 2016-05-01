@@ -104,7 +104,7 @@ void load_current_config()
           config.r[i].y=object->getValue<int>("y");
           config.r[i].w=object->getValue<int>("w");
           config.r[i].h=object->getValue<int>("h");
-          strcpy(config.r[i]text,text.c_str());         
+          strcpy(config.r[i].text,text.c_str());         
           strcpy(config.r[i].name,name.c_str());
           strcpy(config.r[i].color,color.c_str());
 

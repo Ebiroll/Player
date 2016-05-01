@@ -38,7 +38,7 @@ void ofApp::setup(){
 	ofRectangle bound(0,ofGetViewportHeight()-120,1920*1,32);
 	
 	//scrollText.setup(myfont,"Hello FBO Font, can you scroll or is all hope lost? Maybe we have a faster scoller here. Just in case there is some misunderstanding I would like to inform you that this line is long like silly",bound);
-	scrollingText.setup("AvalonB.ttf",20,config.r[scroll].x, config.r[scroll].y+(config.r[scroll].h/2,config.r[scroll].w,config.r[scroll].y);
+	scrollingText.setup("AvalonB.ttf",20,config.r[scroll].x, config.r[scroll].y+(config.r[scroll].h/2),config.r[scroll].w,config.r[scroll].h);
 	scrollingText.showText("This text does not support Unicode but I dont care, it can maybe scroll");
 	scrollingText.setSpeed(4.0);
 
@@ -254,7 +254,7 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
 	
-	scrollingText.update(config.r[scroll].x, config.r[scroll].y+(config.r[scroll].h/2);
+  scrollingText.update(config.r[scroll].x, config.r[scroll].y+(config.r[scroll].h/2));
 	//scrollText.update();
     dataList.setPosition(config.r[datalist].x, config.r[datalist].y, config.r[datalist].w, config.r[datalist].h);
 

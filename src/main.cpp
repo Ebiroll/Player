@@ -38,7 +38,7 @@ int main( ){
   
 
   {
-	ofSetupOpenGL(1280,1024, OF_WINDOW);			// <-------- setup the GL context  1920,1080
+	ofSetupOpenGL(1280,1024, OF_FULLSCREEN);			// <-------- setup the GL context  1920,1080
 	// TV
 	system("/opt/vc/bin/tvservice -j -m CEA > data/modes_CEA.json");
 	// Monitor
