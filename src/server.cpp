@@ -10,6 +10,7 @@
 #include <sstream>
 #include <streambuf>
 #include <iostream>
+#include <ios>
 
 #include <Poco/JSON/JSON.h>
 #include <Poco/JSON/Handler.h>
@@ -121,6 +122,7 @@ void AjaxRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
   printf("PUT CONFIG\n");
 
   std::istream& instr = request.stream();
+  instr.unsetf(std::ios_base::skipws);
   instr >> value;
 
   std::cout << "[" << value << "]" << std::endl ;
