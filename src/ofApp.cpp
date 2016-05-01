@@ -23,7 +23,7 @@ void ofApp::setup(){
 	
 	// ofAppEGLWindow *test=this;
 	// test->setVerticalSync(true);
-	
+        ofSetVerticalSync(true);
 	ofTrueTypeFont::setGlobalDpi(72);
 	myfont = new ofTrueTypeFont;
 	ucFont.loadFont("AvalonB.ttf", 20, true, true);

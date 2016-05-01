@@ -182,8 +182,8 @@ void ofxDataList::draw()
             //ofBackground(ofColor::lightGray);
         }
 
-        if (linesForDisplay.size() > j) {
-            ofDrawRectRounded(0,  cellHeight * j , width, height, 10);
+        if (numCols > j) {
+            ofDrawRectRounded(0,  cellHeight * j , width, cellHeight, 10);
             ofSetColor(255);
             //ucFont.drawString(linesForDisplay[j], 60, 190 + height * j);
         }
@@ -193,6 +193,7 @@ void ofxDataList::draw()
         for (int c = 0; c < numCols; c++) {
             float cy1 = (r + 1) * cellHeight;
             float cx = c * cellWidth;
+            float cy = r * cellHeight;
             ofSetColor(255);
             ofNoFill();
             ofDrawBitmapString(ofToString(entries[topRow + r][leftCol + c]), cx + 1, cy + cellHeight - 1);
