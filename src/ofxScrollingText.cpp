@@ -41,7 +41,7 @@ ofxScrollingText::~ofxScrollingText(){
 //--------------------------------------------------------------
 void ofxScrollingText::setup(string _fontPath, int _fontSize,int x, int y, int w, int h){
     //font.loadFont(_fontPath, _fontSize, true, true);
-    font.setup("Vera.ttf", 1.0, 1024, false, 8, 1.0);
+    font.setup(_fontPath, 1.0, 1024, false, 8, 1.0);
     fontsize=_fontSize;
    
 	height = h; // _fontSize * 2;

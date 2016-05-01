@@ -7,6 +7,7 @@
 #include "server.h"
 #include "ofxScrollingText.h"
 #include "ofxDataList.h"
+#include "ofxFontStash.h"
 //#include "ofxExplodingString.h"
 
 //#define NO_OMX
@@ -93,7 +94,8 @@ class ofApp : public ofBaseApp
         ofRectangle frameBounds;
         float lineSpacing;
 		
-        ofTrueTypeFont font;
+        ofxFontStash font;
+		
         ofAlignHorz alignHorz;
         ofAlignVert alignVert;
 		

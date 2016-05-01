@@ -26,7 +26,7 @@ void ofApp::setup(){
         //ofSetVerticalSync(true);
 	ofTrueTypeFont::setGlobalDpi(72);
 	myfont = new ofTrueTypeFont;
-	ucFont.loadFont("AvalonB.ttf", 20, true, true);
+   //ucFont.loadFont("AvalonB.ttf", 20, true, true);
 	//myfont->loadFont(OF_TTF_SANS, 20);
 	myfont->loadFont("AvalonB.ttf", 32);
 	font.loadFont("AvalonB.ttf", 40, true, true,true);
@@ -37,7 +37,7 @@ void ofApp::setup(){
 	ofRectangle bound(0,ofGetViewportHeight()-120,1920*1,32);
 	
 	//scrollText.setup(myfont,"Hello FBO Font, can you scroll or is all hope lost? Maybe we have a faster scoller here. Just in case there is some misunderstanding I would like to inform you that this line is long like silly",bound);
-	scrollingText.setup("AvalonB.ttf",20,config.r[scroll].x, config.r[scroll].y+(config.r[scroll].h/2),config.r[scroll].w,config.r[scroll].h);
+	scrollingText.setup("AvalonB.ttf",config.r[scroll].h/2,config.r[scroll].x, config.r[scroll].y+(config.r[scroll].h/2),config.r[scroll].w,config.r[scroll].h);
 	scrollingText.showText(config.r[scroll].text);
 	scrollingText.setSpeed(4.0);
 
@@ -306,7 +306,7 @@ void ofApp::update(){
 			if (linesForDisplay.size() > j) {
 			  ofDrawRectRounded(10, 160 + height * j , width, height, 10);
 			  ofSetColor(255);
-			  ucFont.drawString(linesForDisplay[j], 60, 190 + height * j);
+			 // ucFont.drawString(linesForDisplay[j], 60, 190 + height * j);
 			}
 		}
         
@@ -323,7 +323,10 @@ void ofApp::update(){
 void ofApp::draw(){
 	//ofDrawBitmapString("Hello World", 10, 10);
         //static int times=0;
-    myfont->drawString(config.r[label].text, config.r[label].x, config.r[label].y + (config.r[label].h/2));
+    float fontsize=40.0;
+	float lx=config.r[label].x;
+	float ly=config.r[label].y + (config.r[label].h/2);
+    font.draw(config.r[label].text,fontsize,lx , ly);
 	ofSetColor(255);
 
 	da4fidImage->draw(config.r[logo].x, config.r[logo].y, config.r[logo].w, config.r[logo].h); //scale
@@ -333,7 +336,7 @@ void ofApp::draw(){
 	wWidth=ofGetViewportWidth();
 	wHeight=ofGetViewportHeight();	
 
-    font.drawString(config.r[explode].text, config.r[explode].x, config.r[explode].y);
+    font.draw(config.r[explode].text, config.r[explode].x, config.r[explode].y);
 	//xplodingString->draw();
 
 
@@ -358,7 +361,7 @@ void ofApp::draw(){
 			if (linesForDisplay.size() > j) {
 			  ofDrawRectRounded(10, 160 + height * j , width, height, 10);
 			  ofSetColor(255);
-			  ucFont.drawString(linesForDisplay[j], 60, 190 + height * j);
+			  //ucFont.drawString(linesForDisplay[j], 60, 190 + height * j);
 			}
 		}
 #endif
