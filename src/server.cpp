@@ -119,13 +119,16 @@ void AjaxRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
   std::string req=request.getURI();
   std::string name;
   std::string value;
+  std::string allmess;
   printf("PUT CONFIG\n");
 
   std::istream& instr = request.stream();
   instr.unsetf(std::ios_base::skipws);
-  instr >> value;
+  while (instr >> value) {
+      allmess = allmess + value;
+  }
 
-  std::cout << "[" << value << "]" << std::endl ;
+  std::cout << "[" << allmess << "]" << std::endl ;
   std::cout << std::endl;
 
   // Write to current config file in same dir...
@@ -134,7 +137,8 @@ void AjaxRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
       std::ofstream of(total.c_str());
       if (of.is_open())
       {
-          of << value;
+          of.unsetf(std::ios_base::skipws);
+          of << allmess;
       }
       std::cout << "Saving to " << total << std::endl;
   }
