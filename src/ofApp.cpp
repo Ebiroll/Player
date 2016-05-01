@@ -19,9 +19,9 @@ void ofApp::onScrolltextFinnish()
 std::string text = "exploding text";
 
 //--------------------------------------------------------------
-void ofApp::setup(){
-	
-        ofSetVerticalSync(true);
+void ofApp::setup(){	
+    ofSetVerticalSync(true);
+    hideCursor();
 	ofTrueTypeFont::setGlobalDpi(72);
 	myfont = new ofTrueTypeFont;
    //ucFont.loadFont("AvalonB.ttf", 20, true, true);
