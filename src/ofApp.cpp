@@ -334,7 +334,7 @@ void ofApp::draw(){
 	wWidth=ofGetViewportWidth();
 	wHeight=ofGetViewportHeight();	
 
-   font.drawString(text, config.r[exploding].x, config.r[exploding].y);
+    font->drawString(text, config.r[exploding].x, config.r[exploding].y);
 	xplodingString->draw();
 
 
