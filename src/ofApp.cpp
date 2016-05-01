@@ -13,8 +13,7 @@ unsigned short     gPort=10010;
 
 void ofApp::onScrolltextFinnish()
 {
-	scrollingText.showText("This text will repeat again and again.....");
-
+	scrollingText.showText(config.r[scroll].text);
 }
 
 std::string text = "exploding text";
@@ -39,7 +38,7 @@ void ofApp::setup(){
 	
 	//scrollText.setup(myfont,"Hello FBO Font, can you scroll or is all hope lost? Maybe we have a faster scoller here. Just in case there is some misunderstanding I would like to inform you that this line is long like silly",bound);
 	scrollingText.setup("AvalonB.ttf",20,config.r[scroll].x, config.r[scroll].y+(config.r[scroll].h/2),config.r[scroll].w,config.r[scroll].h);
-	scrollingText.showText("This text does not support Unicode but I dont care, it can maybe scroll");
+	scrollingText.showText(config.r[scroll].text);
 	scrollingText.setSpeed(4.0);
 
 	dataList.setup(config.r[datalist].x, config.r[datalist].y, config.r[datalist].w, config.r[datalist].h, 3, 3);
@@ -324,7 +323,7 @@ void ofApp::update(){
 void ofApp::draw(){
 	//ofDrawBitmapString("Hello World", 10, 10);
         //static int times=0;
-  myfont->drawString("Hang Nadim Batam Airport", config.r[label].x, config.r[label].y + (config.r[label].h/2));
+    myfont->drawString(config.r[label].text, config.r[label].x, config.r[label].y + (config.r[label].h/2));
 	ofSetColor(255);
 
 	da4fidImage->draw(config.r[logo].x, config.r[logo].y, config.r[logo].w, config.r[logo].h); //scale

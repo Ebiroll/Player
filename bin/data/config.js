@@ -105,7 +105,7 @@ function init() {
 
    $('#currtext').change(function(){
        var input = $("#currtext").val();
-       mulrect[textIxSel].text=String(input);
+       mulrect[textIxSel].text=encodeURIComponent(input);
        console.log(input);
    });
 
@@ -115,7 +115,7 @@ function init() {
              var textSelected   = optionSelected.text();
              console.log(valueSelected,textSelected);
              textIxSel=Number(valueSelected)
-             document.getElementById('currtext').innerText = mulrect[valueSelected].text;
+             $("#currtext").val( mulrect[valueSelected].text);
      });
 
     $("#ceaset").click(function(e){
@@ -131,6 +131,20 @@ function init() {
                               }
        });
     });
+
+      $("#dmtset").click(function(e){
+         //$("#canv").
+         $.ajax({
+                    "dataType": 'json',
+                    "type": "POST",
+                    "url": "/api/mode",
+                    "data": { "type": "DMT", "mode" : $( "#dmt" ).val() },
+                    "complete": function (response) {
+                                    console.log('complete');
+                                    //$('#output').html(response.responseText);
+                                }
+         });
+      });
 
       $("#getconf").click(function(e){
         var str=JSON.stringify(mulrect,undefined,2);

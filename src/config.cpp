@@ -13,6 +13,7 @@
 #include <Poco/Dynamic/Var.h>
 #include <Poco/JSON/ParseHandler.h>
 #include <Poco/JSON/Query.h>
+#include <Poco/URI.h>
 
 using namespace Poco::JSON;
 using namespace Poco::Dynamic;
@@ -70,6 +71,7 @@ void set_default() {
     config.r[label].y=100;
     config.r[label].w=40;
     config.r[label].h=40;
+    strcpy(config.r[label].text,"Hang Nadim Batam Airport");
 
 
     config.r[no_smoke].x=200;
@@ -105,12 +107,19 @@ void load_current_config()
           Object::Ptr object = arr->getObject(i);
           std::string name=object->getValue<std::string>("name");
           std::string color=object->getValue<std::string>("color");
-          std::string text=object->getValue<std::string>("text");
+          std::string text;
+          Poco::URI::decode(object->getValue<std::string>("text"),text,false);
+          
+             
+
           config.r[i].x=object->getValue<int>("x");
           config.r[i].y=object->getValue<int>("y");
           config.r[i].w=object->getValue<int>("w");
           config.r[i].h=object->getValue<int>("h");
-          strcpy(config.r[i].text,text.c_str());         
+          strcpy(config.r[i].text,text.c_str());
+          if (i==label && text.length()==0) {
+               strcpy(config.r[label].text,"Hang Nadim Batam Airport");
+          }         
           strcpy(config.r[i].name,name.c_str());
           strcpy(config.r[i].color,color.c_str());
 
