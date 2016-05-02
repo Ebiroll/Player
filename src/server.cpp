@@ -421,9 +421,10 @@ HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServer
         std::string uri=request.getURI();
         std::cout << "Request" << uri  << "\n";
 
-        if (uri=="/api/shutdown") {
+        if (uri=="/api/shutdown?pass=beer") {
             // Shuting down
             printf("SHUT DOWN SYSTEM NOW!!");
+	    system("./shutdown.sh");
             // ofExit();
         }
         if (uri=="/api/restart") {

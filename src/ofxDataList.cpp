@@ -43,9 +43,9 @@ void ofxDataList::setup(int x, int y, int w , int h,int numDisplayRows, int numD
     
     {
     		ofxHttpForm form;
-			form.action = "http://127.0.0.1:3000/airportdata";
-		    form.method = OFX_HTTP_GET;
-			httpUtils.addForm(form);
+		form.action = "http://127.0.0.1:3000/airportdata";
+		form.method = OFX_HTTP_GET;
+		httpUtils.addForm(form);
     }
     
 
@@ -59,30 +59,30 @@ void ofxDataList::timerCompleteHandler( int &args )
     
     if (topRow < getNumberOfEntries()) {
         topRow+=3;
-        if (topRow>getNumberOfEntries()) {
+        if (topRow>=getNumberOfEntries()) {
            topRow=0; 
-           // Here add extra request
-
-		   {
-			   ofxHttpForm form;
-			   form.action = "http://127.0.0.1:3000/airportdata";
-			   form.method = OFX_HTTP_GET;
-			   httpUtils.addForm(form);
-		   }
+           // New data request
+	   {
+	     ofxHttpForm form;
+	     form.action = "http://127.0.0.1:3000/airportdata";
+	     form.method = OFX_HTTP_GET;
+	     httpUtils.addForm(form);
+	   }
 
         }
         content_updated=true;
     }
-    
-    
-    
-}
+    else
+    {
+        topRow=0; 
+    }    
+ }
 
 
 //--------------------------------------------------------------
 void ofxDataList::newResponse(ofxHttpResponse & response) {
 	string responseStr = ofToString(response.status) + ": " + (string)response.responseBody;
-	//std::cout << responseStr;
+	std::cout << responseStr;
 	//printf("%s\n", response.responseBody.c_str());
     //return;
 
