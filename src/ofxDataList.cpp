@@ -27,7 +27,118 @@ void ofxDataList::setup(int x, int y, int w , int h,int numDisplayRows, int numD
     setLeftCol(0);
     selectRow(0);
     setActive(true);
+
+
+    timer.setup( 3000 ) ;
+    timer.start( true ) ;
+    
+    ofAddListener( timer.TIMER_COMPLETE , this, &ofxDataList::timerCompleteHandler ) ;
+    
+    
+    
+    ofAddListener(httpUtils.newResponseEvent, this, &ofxDataList::newResponse);
+	//httpUtils.start();
+    
+    {
+    		ofxHttpForm form;
+			//form.action = url;
+			form.action = "http://192.168.0.183:3000/airportdata";
+		    form.method = OFX_HTTP_GET;
+			httpUtils.addForm(form);
+			   //requestStr = "message sent: " + ofToString(counter);        
+        
+    }
+    
+
 }
+
+void ofxDataList::timerCompleteHandler( int &args )
+{
+    std::cout << "TIMER" << std::endl;
+    std::cout << topRow << std::endl;
+    std::cout << getNumberOfEntries() << std::endl;
+    
+    if (topRow < getNumberOfEntries()) {
+        topRow+=3;
+        if (topRow>getNumberOfEntries()) {
+           topRow=0; 
+           // Here add extra request
+        }
+        content_updated=true;
+    }
+    
+    
+    
+}
+
+
+//--------------------------------------------------------------
+void ofxDataList::newResponse(ofxHttpResponse & response) {
+	string responseStr = ofToString(response.status) + ": " + (string)response.responseBody;
+	//std::cout << responseStr;
+	//printf("%s\n", response.responseBody.c_str());
+    return;
+
+	if (XML.loadFromBuffer(response.responseBody))
+	{
+		clearEntries();
+		//XML.setTo("ResponseOfDepartures"); // change relative root to <feed>
+		//XML.setTo("ResponseData"); // change relative root to <feed>
+		//XML.setTo("Trains");
+		//XML.setTo("//ResponseOfDepartures[0]//ResponseData[0]//Trains");
+		//XML.setTo("//ResponseOfDepartures//ResponseData//Trains");
+		//XML.setTo(root);
+		XML.setTo("FlightDataList");
+
+        vector<string> entry;
+
+		//int numEntries = XML.getNumChildren("Train");
+		// iterate through <entry> tags
+    	//XML.setTo(row);
+		XML.setTo("FlightData"); 
+		string value = XML.getValue("Destination");
+   		string flight = XML.getValue("Flight");
+		string time = XML.getValue("12:10");
+
+        entry.clear();
+   	    entry.push_back(value);
+	    entry.push_back(flight);
+	    entry.push_back(time);
+   	    addEntry(entry);
+
+
+/*
+	entry.push_back("J");
+	entry.push_back("12:10");
+	entry.push_back("Jakarta");
+	entry.push_back("????");
+
+	dataList.addEntry(entry);
+    */
+
+
+	while (XML.setToSibling()) {
+        XML.setTo("FlightData"); 
+		string value = XML.getValue("Destination");
+   		string flight = XML.getValue("Flight");
+		string time = XML.getValue("12:10");
+
+        entry.clear();
+   	    entry.push_back(value);
+	    entry.push_back(flight);
+	    entry.push_back(time);
+   	    addEntry(entry);
+     }  
+
+
+      content_updated=true;
+	  //string  test = string("Västerhaninge");
+	  //linesForDisplay.push_back(test);
+
+
+	}
+}
+
 //--------------------------------------------------------------
 void ofxDataList::sortByCol(int col,bool direction)
 {
@@ -75,6 +186,8 @@ void ofxDataList::setActive(bool active)
 // This is called by update
 void ofxDataList::setPosition(int x, int y,int w, int h)
 {
+    timer.update( ) ;
+    
     this->x = x;
     this->y = y;
     width=w; 
@@ -185,6 +298,9 @@ void ofxDataList::draw()
     //ofPushMatrix();
     //ofTranslate(x, y);
     if (content_updated) {
+        _fbo.clear();
+        _fbo.allocate(_fboSettings);        
+
         _fbo.begin();
         {
         

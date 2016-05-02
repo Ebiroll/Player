@@ -2,6 +2,8 @@
 
 #include "ofMain.h"
 #include "ofxFontStash.h"
+#include "ofxHttpUtils.h"
+#include "ofxSimpleTimer.h"
 
 class ofxDataList
 {
@@ -33,6 +35,11 @@ public:
     
     void draw();
     
+    // Event handlers
+    void newResponse(ofxHttpResponse & response);
+    void timerCompleteHandler( int &args );
+    
+    
     template<typename ListenerClass, typename ListenerMethod>
     void addSpreadsheetChangedListener(ListenerClass *listener, ListenerMethod method) {
         ofAddListener(changeEvent, listener, method);
@@ -42,10 +49,11 @@ public:
         ofRemoveListener(changeEvent, listener, method);
     }
 
+    void setTopRow(int topRow) {this->topRow = topRow;}
+
 private:
     void deleteSelectedRow();
 
-    void setTopRow(int topRow) {this->topRow = topRow;}
     void setLeftCol(int leftCol) {this->leftCol = leftCol;}
     void selectRow(int selectedRow) {this->selectedRow = selectedRow;}
     void selectCol(int selectedCol) {this->selectedCol = selectedCol;}
@@ -82,7 +90,10 @@ private:
     ofColor _clearColor;
     bool content_updated;
     ofxFontStash font;
-    
+	ofxHttpUtils httpUtils;
+
+    ofXml XML;    
     ofEvent<void> changeEvent;
+    ofxSimpleTimer  timer;
 };
 

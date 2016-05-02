@@ -44,14 +44,42 @@ void ofApp::setup(){
 	//dataList.setup(10, 100, 400, 400, 3, 3);
 
 	vector<string> entry;
-	entry.push_back("J");
+	entry.push_back("AFL 216");
 	entry.push_back("12:10");
 	entry.push_back("Jakarta");
-	entry.push_back("????");
+    entry.push_back("???");
 
 	dataList.addEntry(entry);
+	entry.clear();
+	entry.push_back("KLM 666");
+	entry.push_back("12:20");
+	entry.push_back("Stockholm");
+    entry.push_back("???");
+
 	dataList.addEntry(entry);
+	entry.clear();
+	entry.push_back("SAS 216");
+	entry.push_back("12:30");
+	entry.push_back("Rome");
+    entry.push_back("???");
+	
 	dataList.addEntry(entry);
+	entry.clear();
+	entry.push_back("AFL 212");
+	entry.push_back("12:40");
+	entry.push_back("Sydney");
+    entry.push_back("???");	
+	dataList.addEntry(entry);
+
+	entry.push_back("SLM 212");
+	entry.push_back("12:40");
+	entry.push_back("Slumtown");
+    entry.push_back("???");	
+	dataList.addEntry(entry);
+
+
+
+
 
 	ofAddListener(scrollingText.completeEvent, this, &ofApp::onScrolltextFinnish);
 
@@ -173,10 +201,10 @@ void ofApp::setup(){
        lineSpacing = 1.0f;
 
 	   ofAddListener(httpUtils.newResponseEvent, this, &ofApp::newResponse);
-	   httpUtils.start();
+	   //httpUtils.start();
 
 	   ofAddListener(httpUtils.newResponseEvent, this, &ofApp::videoResponse);
-	   videoHttpUtils.start();
+	   //videoHttpUtils.start();
 
 
 #ifndef NO_OMX
@@ -519,7 +547,7 @@ void ofApp::keyPressed(int key){
 		    {
 			   ofxHttpForm form;
 			   //form.action = url;
-			   form.action = "http://api.sl.se/api2/realtimedepartures.xml?key=245e126ccbf0451cbca8d3fcc428b0b9&siteid=9702&timewindow=20";
+			   form.action = "http://api.sl.se/api2/realtimedepartures.xml?key=9e99975c83864b6f8dab6ab4baddaba8&siteid=9702&timewindow=20";
 			   form.method = OFX_HTTP_GET;
 			   httpUtils.addForm(form);
 			   //requestStr = "message sent: " + ofToString(counter);
