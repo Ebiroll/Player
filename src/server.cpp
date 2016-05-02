@@ -152,7 +152,7 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
       // data/modes_DMT.json
       printf("------------- Serving web page: %s\n",req.c_str());
 
-      if ( request.getURI()  == "favicon.ico") {
+      if ( request.getURI()  == "/favicon.ico") {
           filename="data/favicon.ico";
           type="image/vnd.microsoft.icon";
           handleFileRequest(request, response);

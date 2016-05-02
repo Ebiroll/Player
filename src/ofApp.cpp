@@ -402,7 +402,7 @@ void ofApp::draw(){
 
 	
 	//int position = (ofGetFrameNum()  30);
-	int position = ofGetViewportWidth() - ofGetFrameNum();
+	//int position = ofGetViewportWidth() - ofGetFrameNum();
 
     //scrollText.draw(position,0);
 	scrollingText.draw();

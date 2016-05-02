@@ -9,7 +9,7 @@
 #include "ofxDataList.h"
 #include "ofxFontStash.h"
 
-#define NO_OMX
+//#define NO_OMX
 
 
 #ifndef NO_OMX

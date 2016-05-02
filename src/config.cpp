@@ -80,8 +80,15 @@ void set_default() {
 
     config.r[no_smoke].x=200;
     config.r[no_smoke].y=200;
-    config.r[no_smoke].w=20;
-    config.r[no_smoke].h=20;
+    config.r[no_smoke].w=80;
+    config.r[no_smoke].h=80;
+
+	config.r[datalist].x = 300;
+	config.r[datalist].y = 400;
+	config.r[datalist].w = 300;
+	config.r[datalist].h = 300;
+
+
 
     config.config_updated=1;
 
