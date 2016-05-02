@@ -21,6 +21,7 @@ void ofxDataList::setup(int x, int y, int w , int h,int numDisplayRows, int numD
 	cellWidth = width / numDisplayCols;  
 	cellHeight = height / (numDisplayRows + 1);
 
+    font.setup("AvalonB.ttf", 1.0, 1024, false, 8, 1.0);
 	setPosition(x, y,w,h);
     setTopRow(0);
     setLeftCol(0);
@@ -71,6 +72,7 @@ void ofxDataList::setActive(bool active)
     }
 }
 //--------------------------------------------------------------
+// This is called by update
 void ofxDataList::setPosition(int x, int y,int w, int h)
 {
     this->x = x;
@@ -79,8 +81,21 @@ void ofxDataList::setPosition(int x, int y,int w, int h)
     height=h;
     cellWidth = width / numDisplayCols;  
 	cellHeight = height / (numDisplayRows + 1);
-
-}
+    
+    
+   if (_fboSettings.width!=width || 
+    _fboSettings.height!=height) {
+        _fboSettings.width=width;
+        _fboSettings.height=height;
+        _fboSettings.internalformat = GL_RGBA;
+        if (_fbo.isAllocated()) {
+            _fbo.clear();
+        }
+        _fbo.allocate(_fboSettings);        
+        content_updated=true;
+    }
+    
+};
 
 struct tokens : std::ctype<char>
 {
@@ -166,40 +181,56 @@ void ofxDataList::draw()
     int numRows = min(numDisplayRows, (int) entries.size() - topRow);
     int numCols = min(numDisplayCols, (int) headers.size() - leftCol);
     
-    ofPushStyle();
-    ofPushMatrix();
-    ofTranslate(x, y);
-    for (int j = 0; j < numRows; j++) {
-        if (j % 2 == 0) {
-            ofSetColor(ofColor(40, 40, 40));
-            //ofClear(40,0);
-            //ofBackground(ofColor(40, 40, 40));
-        }
-        else
+    //ofPushStyle();
+    //ofPushMatrix();
+    //ofTranslate(x, y);
+    if (content_updated) {
+        _fbo.begin();
         {
-            ofSetColor(ofColor::darkGrey);
-            //ofClear(255,0);
-            //ofBackground(ofColor::lightGray);
-        }
+        
+            for (int j = 0; j < numRows; j++) {
+                if (j % 2 == 0) {
+                    ofSetColor(ofColor(40, 40, 40));
+                    //ofClear(40,0);
+                    //ofBackground(ofColor(40, 40, 40));
+                }
+                else
+                {
+                    ofSetColor(ofColor::darkGrey);
+                    //ofClear(255,0);
+                    //ofBackground(ofColor::lightGray);
+                }
 
-        if (numCols+1 > j) {
-	    //ofDrawRectRounded(0,  cellHeight * j , width, cellHeight, 10);
-            ofSetColor(255);
-            //ucFont.drawString(linesForDisplay[j], 60, 190 + height * j);
-        }
-    }
-    ofTranslate(0, cellHeight);
-    for (int r = 0; r < numRows; r++) {
-        for (int c = 0; c < numCols; c++) {
-            float cy1 = (r + 1) * cellHeight;
-            float cx = c * cellWidth;
-            float cy = r * cellHeight;
-            ofSetColor(255);
-            ofNoFill();
-            ofDrawBitmapString(ofToString(entries[topRow + r][leftCol + c]), cx + 1, cy + cellHeight - 1);
-        }
-    }
+                if (numCols+1 > j) {
+                    ofDrawRectRounded(0,  cellHeight * j , width, cellHeight, 10);
+                    ofSetColor(255);
+                    //ucFont.drawString(linesForDisplay[j], 60, 190 + height * j);
+                }
+            }
+            //ofTranslate(0, cellHeight);
+            for (int r = 0; r < numRows; r++) {
+                for (int c = 0; c < numCols; c++) {
+                    float cy1 = (r + 1) * cellHeight;
+                    float cx = c * cellWidth;
+                    float cy = r * cellHeight;
+                    ofSetColor(255);
+                    //ofNoFill();
+                    float px=cx + 4;
+                    float py= cy + cellHeight/2 - 1;
+                    float fsize=20;
+                    const std::string textString=ofToString(entries[topRow + r][leftCol + c]);
+                    //ofSetColor(55);
 
+                    font.draw(textString,fsize,px,py);
+                    //ofDrawBitmapString(ofToString(entries[topRow + r][leftCol + c]), cx + 1, cy + cellHeight - 1);
+                }
+            }
+        }
+        _fbo.end();
+        content_updated=false;
+    }
+    
+    _fbo.draw(x,y);
     // draw header
     /*
     for (int c = 0; c < numCols; c++) {
@@ -243,8 +274,8 @@ void ofxDataList::draw()
     }
     */
     
-    ofPopMatrix();
-    ofPopStyle();
+    //ofPopMatrix();
+    //ofPopStyle();
 }
 //--------------------------------------------------------------
 void ofxDataList::keyPressed(ofKeyEventArgs &evt)

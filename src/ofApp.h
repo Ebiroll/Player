@@ -10,7 +10,7 @@
 #include "ofxFontStash.h"
 //#include "ofxExplodingString.h"
 
-//#define NO_OMX
+#define NO_OMX
 
 
 #ifndef NO_OMX

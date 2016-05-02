@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-
+#include "ofxFontStash.h"
 
 class ofxDataList
 {
@@ -76,9 +76,12 @@ private:
     vector<vector<string> > entries;
     vector<vector<float> > entriesF;
     
-    //ofFbo _fbo;
-    //ofFbo::Settings _fboSettings;
-    //ofColor _clearColor;
+    // Use FBO for drawing
+    ofFbo _fbo;
+    ofFbo::Settings _fboSettings;
+    ofColor _clearColor;
+    bool content_updated;
+    ofxFontStash font;
     
     ofEvent<void> changeEvent;
 };

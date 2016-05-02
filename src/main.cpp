@@ -18,9 +18,7 @@ void setNewMode(const char *mode) {
 void run() {
 
 
-	// this kicks off the running of my app
-	// can be OF_WINDOW or OF_FULLSCREEN
-	// pass in width and height too:
+	
 
 
 }
@@ -75,10 +73,12 @@ int main( ){
   int fbdev = open("/dev/fb0", O_RDWR);  
   ioctl(fbdev, FBIO_WAITFORVSYNC, &zero);
   */
-  
+    // this kicks off the running of my app
+	// can be OF_WINDOW or OF_FULLSCREEN
+	// pass in width and height too:
 
   {
-	ofSetupOpenGL(1280,1024, OF_FULLSCREEN);			// <-------- setup the GL context  1920,1080
+	ofSetupOpenGL(1024,768, OF_WINDOW);			// <-------- setup the GL context  1920,1080
 	// TV
 	system("/opt/vc/bin/tvservice -j -m CEA > data/modes_CEA.json");
 	// Monitor
