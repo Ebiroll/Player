@@ -83,6 +83,7 @@ void set_default() {
     config.r[no_smoke].w=20;
     config.r[no_smoke].h=20;
 
+    config.config_updated=1;
 
 }
 

@@ -36,6 +36,8 @@ public:
 
     ofxScrollingText();
     ~ofxScrollingText();
+
+    bool isPlaying;
     
 private:
     // private instance
@@ -45,7 +47,6 @@ private:
     int fontsize;
     //ofxTrueTypeFontUC font;
     bool isVisible;
-    bool isPlaying;
     bool isScroll;
     float speed;
     float alpha;

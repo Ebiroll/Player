@@ -49,6 +49,7 @@ typedef struct  {
   char name[256];
   int  width;
   int  height;
+  int config_updated;
   rect r[32];
 } conf;
 

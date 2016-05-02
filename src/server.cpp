@@ -151,6 +151,16 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
       std::string req=request.getURI();
       // data/modes_DMT.json
       printf("------------- Serving web page: %s\n",req.c_str());
+
+      if ( request.getURI()  == "favicon.ico") {
+          filename="data/favicon.ico";
+          type="image/vnd.microsoft.icon";
+          handleFileRequest(request, response);
+          printf("FILE\n");
+        return;
+      }
+
+
       if ( request.getURI()  == "/lib/jquery-2.2.3.min.js") {
           filename="data/lib/jquery-2.2.3.min.js";
           type="text/javascript";

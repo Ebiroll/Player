@@ -37,16 +37,14 @@ void ofxDataList::setup(int x, int y, int w , int h,int numDisplayRows, int numD
     
     
     ofAddListener(httpUtils.newResponseEvent, this, &ofxDataList::newResponse);
-	//httpUtils.start();
+	httpUtils.start();
     
     {
     		ofxHttpForm form;
-			//form.action = url;
-			form.action = "http://192.168.0.183:3000/airportdata";
+			form.action = "http://127.0.0.1:3000/airportdata";
 		    form.method = OFX_HTTP_GET;
 			httpUtils.addForm(form);
-			   //requestStr = "message sent: " + ofToString(counter);        
-        
+			   //requestStr = "message sent: " + ofToString(counter);                
     }
     
 

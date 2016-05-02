@@ -20,11 +20,11 @@ std::string text = "exploding text";
 
 //--------------------------------------------------------------
 void ofApp::setup(){	
-       ofSetVerticalSync(true);
-       ofHideCursor();
-       ofTrueTypeFont::setGlobalDpi(72);
-       myfont = new ofTrueTypeFont;
-   //ucFont.loadFont("AvalonB.ttf", 20, true, true);
+    ofSetVerticalSync(true);
+    ofHideCursor();
+    ofTrueTypeFont::setGlobalDpi(72);
+    myfont = new ofTrueTypeFont;
+    //ucFont.loadFont("AvalonB.ttf", 20, true, true);
 	//myfont->loadFont(OF_TTF_SANS, 20);
 	myfont->loadFont("AvalonB.ttf", 32);
 	font.setup("AvalonB.ttf", 1.0, 1024, false, 8, 1.0);
@@ -201,7 +201,7 @@ void ofApp::setup(){
        lineSpacing = 1.0f;
 
 	   ofAddListener(httpUtils.newResponseEvent, this, &ofApp::newResponse);
-	   //httpUtils.start();
+	   httpUtils.start();
 
 	   ofAddListener(httpUtils.newResponseEvent, this, &ofApp::videoResponse);
 	   //videoHttpUtils.start();
@@ -278,8 +278,14 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
+	if (config.config_updated==1) {
+		if (!scrollingText.isPlaying) {
+    		scrollingText.showText(config.r[scroll].text);
+		}
+		config.config_updated=0;
+	}
 	
-  scrollingText.update(config.r[scroll].x, config.r[scroll].y+(config.r[scroll].h/2),config.r[scroll].w,config.r[scroll].h);
+    scrollingText.update(config.r[scroll].x, config.r[scroll].y+(config.r[scroll].h/2),config.r[scroll].w,config.r[scroll].h);
 	//scrollText.update();
     dataList.setPosition(config.r[datalist].x, config.r[datalist].y, config.r[datalist].w, config.r[datalist].h);
 
