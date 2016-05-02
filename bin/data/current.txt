@@ -1,0 +1,1 @@
+state 0x12000a [HDMI CEA (5) RGB lim 16:9], 1920x1280 @ 60.00Hz, progressive
