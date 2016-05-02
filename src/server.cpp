@@ -426,10 +426,12 @@ HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServer
             printf("SHUT DOWN SYSTEM NOW!!");
 	    system("./shutdown.sh");
             // ofExit();
+	    return;
         }
         if (uri=="/api/restart") {
             // Restart
             printf("Restarting!!");
+	    return;
         }
 
 
