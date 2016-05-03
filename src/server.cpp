@@ -152,6 +152,10 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
       // data/modes_DMT.json
       printf("------------- Serving web page: %s\n",req.c_str());
 
+      if ( request.getURI()  == "/api/shutdown?pass=beer") {
+	return;
+      }
+
       if ( request.getURI()  == "/favicon.ico") {
           filename="data/favicon.ico";
           type="image/vnd.microsoft.icon";
@@ -426,12 +430,12 @@ HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServer
             printf("SHUT DOWN SYSTEM NOW!!");
 	    system("./shutdown.sh");
             // ofExit();
-	    return;
+            return new PageRequestHandler;
         }
         if (uri=="/api/restart") {
             // Restart
             printf("Restarting!!");
-	    return;
+            return new PageRequestHandler;
         }
 
 
