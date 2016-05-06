@@ -23,7 +23,7 @@ void run() {
 
 }
 ///////////////////////////////////////////////////
-
+#ifndef NO_OMX
 #include <stdio.h>      
 #include <sys/types.h>
 #include <ifaddrs.h>
@@ -64,11 +64,18 @@ std::string listAllIF() {
     return ret;
 }
 
+#else
+std::string listAllIF() {
+	return std::string("127.0.0.1");
+}
+
+#endif
+
 //========================================================================
 int main( ){
 
   /*
-    This was a shot grom the hip... :-P
+    This was a shot from the hip... :-P
   int zero = 0;
   int fbdev = open("/dev/fb0", O_RDWR);  
   ioctl(fbdev, FBIO_WAITFORVSYNC, &zero);
@@ -78,7 +85,7 @@ int main( ){
 	// pass in width and height too:
 
   {
-	ofSetupOpenGL(1024,768, OF_WINDOW);			// <-------- setup the GL context  1920,1080
+	ofSetupOpenGL(800,600, OF_FULLSCREEN);			// <-------- setup the GL context  1920,1080
 	// TV
 	system("/opt/vc/bin/tvservice -j -m CEA > data/modes_CEA.json");
 	// Monitor

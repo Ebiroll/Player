@@ -152,7 +152,11 @@ void PageRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerRes
       // data/modes_DMT.json
       printf("------------- Serving web page: %s\n",req.c_str());
 
-      if ( request.getURI()  == "favicon.ico") {
+      if ( request.getURI()  == "/api/shutdown?pass=beer") {
+	return;
+      }
+
+      if ( request.getURI()  == "/favicon.ico") {
           filename="data/favicon.ico";
           type="image/vnd.microsoft.icon";
           handleFileRequest(request, response);
@@ -421,14 +425,17 @@ HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServer
         std::string uri=request.getURI();
         std::cout << "Request" << uri  << "\n";
 
-        if (uri=="/api/shutdown") {
+        if (uri=="/api/shutdown?pass=beer") {
             // Shuting down
             printf("SHUT DOWN SYSTEM NOW!!");
+	    system("./shutdown.sh");
             // ofExit();
+            return new PageRequestHandler;
         }
         if (uri=="/api/restart") {
             // Restart
             printf("Restarting!!");
+            return new PageRequestHandler;
         }
 
 

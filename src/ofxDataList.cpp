@@ -2,6 +2,8 @@
 #include <cctype>
 #include <sstream>
 #include <streambuf>
+#include <Poco/DateTimeFormatter.h>
+#include <Poco/Timestamp.h>
 
 //--------------------------------------------------------------
 ofxDataList::ofxDataList()
@@ -29,22 +31,21 @@ void ofxDataList::setup(int x, int y, int w , int h,int numDisplayRows, int numD
     setActive(true);
 
 
-    timer.setup( 3000 ) ;
+    timer.setup( 5000 ) ;
     timer.start( true ) ;
     
     ofAddListener( timer.TIMER_COMPLETE , this, &ofxDataList::timerCompleteHandler ) ;
     
     
-    
+  
     ofAddListener(httpUtils.newResponseEvent, this, &ofxDataList::newResponse);
 	httpUtils.start();
     
     {
     		ofxHttpForm form;
-			form.action = "http://127.0.0.1:3000/airportdata";
-		    form.method = OFX_HTTP_GET;
-			httpUtils.addForm(form);
-			   //requestStr = "message sent: " + ofToString(counter);                
+		form.action = "http://127.0.0.1:3000/airportdata";
+		form.method = OFX_HTTP_GET;
+		httpUtils.addForm(form);
     }
     
 
@@ -57,25 +58,33 @@ void ofxDataList::timerCompleteHandler( int &args )
     std::cout << getNumberOfEntries() << std::endl;
     
     if (topRow < getNumberOfEntries()) {
-        topRow+=3;
-        if (topRow>getNumberOfEntries()) {
+        topRow+= numDisplayRows;
+        if (topRow>=getNumberOfEntries()) {
            topRow=0; 
-           // Here add extra request
+           // New data request
+	   {
+	     ofxHttpForm form;
+	     form.action = "http://127.0.0.1:3000/airportdata";
+	     form.method = OFX_HTTP_GET;
+	     httpUtils.addForm(form);
+	   }
+
         }
         content_updated=true;
     }
-    
-    
-    
-}
+    else
+    {
+        topRow=0; 
+    }    
+ }
 
 
 //--------------------------------------------------------------
 void ofxDataList::newResponse(ofxHttpResponse & response) {
 	string responseStr = ofToString(response.status) + ": " + (string)response.responseBody;
-	//std::cout << responseStr;
+	std::cout << responseStr;
 	//printf("%s\n", response.responseBody.c_str());
-    return;
+    //return;
 
 	if (XML.loadFromBuffer(response.responseBody))
 	{
@@ -94,37 +103,37 @@ void ofxDataList::newResponse(ofxHttpResponse & response) {
 		// iterate through <entry> tags
     	//XML.setTo(row);
 		XML.setTo("FlightData"); 
-		string value = XML.getValue("Destination");
    		string flight = XML.getValue("Flight");
-		string time = XML.getValue("12:10");
+		string value = XML.getValue("Destination");
+		string time = XML.getValue("CTime");
+		string gate = XML.getValue("Gate");
 
         entry.clear();
    	    entry.push_back(value);
 	    entry.push_back(flight);
 	    entry.push_back(time);
+		entry.push_back(gate);
+
    	    addEntry(entry);
-
-
-/*
-	entry.push_back("J");
-	entry.push_back("12:10");
-	entry.push_back("Jakarta");
-	entry.push_back("????");
-
-	dataList.addEntry(entry);
-    */
 
 
 	while (XML.setToSibling()) {
         XML.setTo("FlightData"); 
+		string flight = XML.getValue("Flight");
 		string value = XML.getValue("Destination");
-   		string flight = XML.getValue("Flight");
-		string time = XML.getValue("12:10");
+		string time = XML.getValue("Ctime");
+		string gate = XML.getValue("Gate");
+
+		//string timeFormat = "%H:%M";
+		//std::string tmp=Poco::DateTimeFormatter::format(Poco::Timestamp(strtoll(time.c_str(), NULL, 10)), timeFormat);
+
 
         entry.clear();
-   	    entry.push_back(value);
-	    entry.push_back(flight);
-	    entry.push_back(time);
+		entry.push_back(value);
+		entry.push_back(flight);
+		entry.push_back(time);
+		entry.push_back(gate);
+
    	    addEntry(entry);
      }  
 
@@ -329,7 +338,7 @@ void ofxDataList::draw()
                     float cy = r * cellHeight;
                     ofSetColor(255);
                     //ofNoFill();
-                    float px=cx + 4;
+                    float px=cx + 8;
                     float py= cy + cellHeight/2 - 1;
                     float fsize=20;
                     const std::string textString=ofToString(entries[topRow + r][leftCol + c]);

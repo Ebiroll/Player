@@ -9,7 +9,7 @@
 #include "ofxDataList.h"
 #include "ofxFontStash.h"
 
-#define NO_OMX
+//#define NO_OMX
 
 
 #ifndef NO_OMX
@@ -68,7 +68,6 @@ class ofApp : public ofBaseApp
 
 		ofXml datasourcesXML;
 		ofXml traindataXML;
-		ofXml playlistXML;
 
 #ifndef NO_OMX
         ofxOMXPlayer omxPlayer;
@@ -77,10 +76,18 @@ class ofApp : public ofBaseApp
 		// Video loop
 		vector<ofFile> files;
 		vector<bool> fullScreen;
+
+		vector<ofFile> newFiles;
+		vector<bool> newFullScreen;
+
+
 		int videoCounter;
 
-
+		ofXml playlistXML;
         ofXml XML;
+		std::string playlistUrl;
+
+
 	    std::string url;
         std::string root;
 	    std::string row;

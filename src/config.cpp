@@ -73,15 +73,22 @@ void set_default() {
     config.r[label].h=40;
     strcpy(config.r[label].text,"Hang Nadim Batam Airport");
 
-    config.r[scroll].x=10;
-    config.r[scroll].y=300;
-    config.r[scroll].w=800;
-    config.r[scroll].h=60;
+    config.r[no_smoke].x=700;
+    config.r[no_smoke].y=100;
+    config.r[no_smoke].w=80;
+    config.r[no_smoke].h=80;
 
-    config.r[no_smoke].x=200;
-    config.r[no_smoke].y=200;
-    config.r[no_smoke].w=20;
-    config.r[no_smoke].h=20;
+	config.r[datalist].x = 300;
+	config.r[datalist].y = 100;
+	config.r[datalist].w = 400;
+	config.r[datalist].h = 400;
+	config.r[datalist].nRows = 5;
+
+	config.r[scroll].x = 10;
+	config.r[scroll].y = 550;
+	config.r[scroll].w = 800;
+	config.r[scroll].h = 60;
+
 
     config.config_updated=1;
 
@@ -122,6 +129,9 @@ void load_current_config()
           config.r[i].w=object->getValue<int>("w");
           config.r[i].h=object->getValue<int>("h");
           strcpy(config.r[i].text,text.c_str());
+		  if (i == datalist) {
+			  config.r[i].nRows = object->getValue<int>("nRows");
+		  }
           if (i==label && text.length()==0) {
                strcpy(config.r[label].text,"Hang Nadim Batam Airport");
           }         
