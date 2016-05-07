@@ -39,45 +39,58 @@ void ofApp::setup(){
 	scrollingText.showText(config.r[scroll].text);
 	scrollingText.setSpeed(4.0);
 
-	dataList.setup(config.r[datalist].x, config.r[datalist].y, config.r[datalist].w, config.r[datalist].h, 3, 3);
+	dataList.setup(config.r[datalist].x, config.r[datalist].y, config.r[datalist].w, config.r[datalist].h, config.r[datalist].nRows, 4);
 
 	//dataList.setup(10, 100, 400, 400, 3, 3);
 
 	vector<string> entry;
 	entry.push_back("AFL 216");
-	entry.push_back("12:10");
 	entry.push_back("Jakarta");
-    entry.push_back("???");
+	entry.push_back("12:10");
+    entry.push_back("B14");
 
 	dataList.addEntry(entry);
 	entry.clear();
 	entry.push_back("KLM 666");
-	entry.push_back("12:20");
 	entry.push_back("Stockholm");
-    entry.push_back("???");
+	entry.push_back("12:20");
+    entry.push_back("B10");
 
 	dataList.addEntry(entry);
 	entry.clear();
 	entry.push_back("SAS 216");
-	entry.push_back("12:30");
 	entry.push_back("Rome");
-    entry.push_back("???");
+	entry.push_back("12:30");
+    entry.push_back("A22");
 	
 	dataList.addEntry(entry);
 	entry.clear();
 	entry.push_back("AFL 212");
-	entry.push_back("12:40");
 	entry.push_back("Sydney");
-    entry.push_back("???");	
-	dataList.addEntry(entry);
-
-	entry.push_back("SLM 212");
 	entry.push_back("12:40");
-	entry.push_back("Slumtown");
-    entry.push_back("???");	
+    entry.push_back("B12");	
 	dataList.addEntry(entry);
 
+	entry.clear();
+	entry.push_back("AFL 212");
+	entry.push_back("Moscow");
+	entry.push_back("12:50");
+    entry.push_back("B18");	
+	dataList.addEntry(entry);
 
+	entry.clear();
+	entry.push_back("TWA 221");
+	entry.push_back("Bejing");
+	entry.push_back("13:10");
+	entry.push_back("B16");
+	dataList.addEntry(entry);
+
+	entry.clear();
+	entry.push_back("TWA 172");
+	entry.push_back("Shanghai");
+	entry.push_back("13:20");
+	entry.push_back("A12");
+	dataList.addEntry(entry);
 
 
 
@@ -138,6 +151,11 @@ void ofApp::setup(){
 			std::cout << "columns:" << columnames << "\r\n";
 		}
 
+		if (value == "playlist.address") {
+			playlistUrl = datasourcesXML.getValue();
+			std::cout << "playlistUrl:" << columnames << "\r\n";
+		}
+
 		
 
 
@@ -145,7 +163,7 @@ void ofApp::setup(){
 	//ofXml traindataXML;
 	dataList.setHeaderByCommalist(columnames);
 
-	//// Playlist
+	//// Playlist --------------------------------------
 	if (!playlistXML.load("playlist.xml")) {
 		std::cout << "Unable to load playlist file\n";
 	}
@@ -191,6 +209,16 @@ void ofApp::setup(){
 			playlistXML.setToParent();
 		}
 	}
+	//// Playlist --------------------------------------
+
+	// Start getting playlist data
+	{
+		ofxHttpForm form;
+		form.action = playlistUrl;
+		form.method = OFX_HTTP_GET;
+		videoHttpUtils.addForm(form);
+	}
+
 
   	   // /da4rid/viewer/adverts/
 
@@ -204,7 +232,7 @@ void ofApp::setup(){
 	   httpUtils.start();
 
 	   ofAddListener(httpUtils.newResponseEvent, this, &ofApp::videoResponse);
-	   //videoHttpUtils.start();
+	   videoHttpUtils.start();
 
 
 #ifndef NO_OMX
@@ -468,14 +496,115 @@ void ofApp::loadNextMovie()
 		videoCounter = 0;
 	}
 	omxPlayer.loadMovie(files[videoCounter].path());
+	if (videoCounter+1 == files.size()) {
+		{
+			// Load playlist
+			ofxHttpForm form;
+			form.action = playlistUrl;
+			form.method = OFX_HTTP_GET;
+			videoHttpUtils.addForm(form);
+	}
+
+	}
 	doLoadNextMovie = false;
 }
 
 #endif
 
 void ofApp::videoResponse(ofxHttpResponse & response) {
+
 	// Video response
-	// One file per line???
+	// 
+
+	//vector<ofFile> newFiles;
+	//vector<bool> newFullScreen;
+
+	newFiles.clear();
+	newFullScreen.clear();
+
+	//string responseStr = ofToString(response.status) + ": " + (string)response.responseBody;
+	string responseStatus = ofToString(response.status);
+	std::cout << "@" << responseStatus << "@\n" ;
+	//printf("%s\n", response.responseBody.c_str());
+
+	if (playlistXML.loadFromBuffer(response.responseBody)) {
+
+		std::cout << "Got playlist response\n";
+
+		playlistXML.setTo("loop");
+		playlistXML.setTo("item");
+		playlistXML.setTo("media");
+		std::string value = playlistXML.getAttribute("name");
+		std::cout << "value" << value << std::endl;
+
+		ofFile file(value);
+		newFiles.push_back(file);
+		std::string full = playlistXML.getAttribute("fullscreen");
+
+		if (full == "true") {
+			newFullScreen.push_back(true);
+		}
+		else
+		{
+			newFullScreen.push_back(false);
+		}
+
+		playlistXML.setToParent();
+		while (playlistXML.setToSibling()) {
+			playlistXML.setTo("media");
+			std::string value = playlistXML.getAttribute("name");
+			ofFile file(value);
+			//std::cout << value;
+
+			newFiles.push_back(file);
+			std::string full = playlistXML.getAttribute("fullscreen");
+
+			if (full == "true") {
+				newFullScreen.push_back(true);
+			}
+			else
+			{
+				newFullScreen.push_back(false);
+			}
+			playlistXML.setToParent();
+		}
+
+		bool newPlaylist = false;
+		if (newFiles.size() != files.size()) {
+			newPlaylist = true;
+			// Set files to new
+		}
+		else
+		{
+			int ix = 0;
+			for (ix = 0; ix < files.size(); ix++) {
+				if (newFiles[ix] != files[ix] || newFullScreen != fullScreen)
+				{
+					newPlaylist = true;
+				}
+			}
+
+
+		}
+
+		if (newPlaylist) {
+			files.clear();
+			fullScreen.clear();
+			videoCounter = 0;
+			int ix = 0;
+			for (ix = 0; ix < files.size(); ix++) {
+				files.push_back(newFiles[ix]);
+				fullScreen.push_back(newFullScreen[ix]);
+			}
+		}
+		//vector<ofFile> newFiles;
+		//vector<bool> newFullScreen;
+
+		//newFiles.clear;
+		//newFullScreen.clear;
+
+
+	}
 }
 
 

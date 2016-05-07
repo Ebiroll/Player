@@ -39,6 +39,7 @@ typedef struct  {
   int y;
   int w;
   int h;
+  int nRows;
   char name[128];
   char color[128];
   char text[512];

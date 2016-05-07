@@ -31,7 +31,7 @@ void ofxDataList::setup(int x, int y, int w , int h,int numDisplayRows, int numD
     setActive(true);
 
 
-    timer.setup( 3000 ) ;
+    timer.setup( 5000 ) ;
     timer.start( true ) ;
     
     ofAddListener( timer.TIMER_COMPLETE , this, &ofxDataList::timerCompleteHandler ) ;
@@ -58,7 +58,7 @@ void ofxDataList::timerCompleteHandler( int &args )
     std::cout << getNumberOfEntries() << std::endl;
     
     if (topRow < getNumberOfEntries()) {
-        topRow+=3;
+        topRow+= numDisplayRows;
         if (topRow>=getNumberOfEntries()) {
            topRow=0; 
            // New data request
@@ -103,8 +103,8 @@ void ofxDataList::newResponse(ofxHttpResponse & response) {
 		// iterate through <entry> tags
     	//XML.setTo(row);
 		XML.setTo("FlightData"); 
-		string value = XML.getValue("Destination");
    		string flight = XML.getValue("Flight");
+		string value = XML.getValue("Destination");
 		string time = XML.getValue("CTime");
 		string gate = XML.getValue("Gate");
 
@@ -119,8 +119,8 @@ void ofxDataList::newResponse(ofxHttpResponse & response) {
 
 	while (XML.setToSibling()) {
         XML.setTo("FlightData"); 
-		string value = XML.getValue("Destination");
 		string flight = XML.getValue("Flight");
+		string value = XML.getValue("Destination");
 		string time = XML.getValue("Ctime");
 		string gate = XML.getValue("Gate");
 
@@ -324,7 +324,7 @@ void ofxDataList::draw()
                     //ofBackground(ofColor::lightGray);
                 }
 
-                if (numCols+1 > j) {
+                if (numRows+1 > j) {
                     ofDrawRectRounded(0,  cellHeight * j , width, cellHeight, 10);
                     ofSetColor(255);
                     //ucFont.drawString(linesForDisplay[j], 60, 190 + height * j);
@@ -336,9 +336,15 @@ void ofxDataList::draw()
                     float cy1 = (r + 1) * cellHeight;
                     float cx = c * cellWidth;
                     float cy = r * cellHeight;
-                    ofSetColor(255);
+                    
+		    if (r % 2 == 0) {
+		      //ofSetColor(ofColor(40, 40, 40));
+		      ofSetColor(255);
+		     } else {
+		      ofSetColor(0);
+		     }
                     //ofNoFill();
-                    float px=cx + 4;
+                    float px=cx + 8;
                     float py= cy + cellHeight/2 - 1;
                     float fsize=20;
                     const std::string textString=ofToString(entries[topRow + r][leftCol + c]);
