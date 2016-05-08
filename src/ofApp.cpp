@@ -251,7 +251,7 @@ void ofApp::setup(){
 	settings.enableTexture = true;		//default true
 	settings.enableLooping = false;		//default true	
 	settings.enableAudio = false;		//default true, save resources by disabling
-	settings.doFlipTexture = true;	//default false
+	settings.doFlipTexture = false;	//default false
 	
 	
 	//so either pass in the settings
