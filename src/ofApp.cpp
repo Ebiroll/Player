@@ -152,8 +152,9 @@ void ofApp::setup(){
 		}
 
 		if (value == "playlist.address") {
-			playlistUrl = datasourcesXML.getValue();
-			std::cout << "playlistUrl:" << columnames << "\r\n";
+		  //playlistUrl = datasourcesXML.getValue();
+		  playlistUrl = "http://127.0.0.1:10080/api/playlist/demo";
+		  std::cout << "playlistUrl:" << columnames << "\r\n";
 		}
 
 		
@@ -211,6 +212,7 @@ void ofApp::setup(){
 	}
 	//// Playlist --------------------------------------
 
+	
 	// Start getting playlist data
 	{
 		ofxHttpForm form;
@@ -218,7 +220,7 @@ void ofApp::setup(){
 		form.method = OFX_HTTP_GET;
 		videoHttpUtils.addForm(form);
 	}
-
+	
 
   	   // /da4rid/viewer/adverts/
 
@@ -229,9 +231,9 @@ void ofApp::setup(){
        lineSpacing = 1.0f;
 
 	   ofAddListener(httpUtils.newResponseEvent, this, &ofApp::newResponse);
-	   httpUtils.start();
+	   //httpUtils.start();
 
-	   ofAddListener(httpUtils.newResponseEvent, this, &ofApp::videoResponse);
+	   ofAddListener(videoHttpUtils.newResponseEvent, this, &ofApp::videoResponse);
 	   videoHttpUtils.start();
 
 
@@ -249,7 +251,7 @@ void ofApp::setup(){
 	settings.enableTexture = true;		//default true
 	settings.enableLooping = false;		//default true	
 	settings.enableAudio = false;		//default true, save resources by disabling
-	//settings.doFlipTexture = true;	//default false
+	settings.doFlipTexture = true;	//default false
 	
 	
 	//so either pass in the settings
@@ -497,7 +499,7 @@ void ofApp::loadNextMovie()
 	}
 	omxPlayer.loadMovie(files[videoCounter].path());
 	if (videoCounter+1 == files.size()) {
-		{
+	{
 			// Load playlist
 			ofxHttpForm form;
 			form.action = playlistUrl;
@@ -588,22 +590,16 @@ void ofApp::videoResponse(ofxHttpResponse & response) {
 		}
 
 		if (newPlaylist) {
-			files.clear();
-			fullScreen.clear();
+		  files.clear();
+		  fullScreen.clear();
 			videoCounter = 0;
 			int ix = 0;
-			for (ix = 0; ix < files.size(); ix++) {
-				files.push_back(newFiles[ix]);
-				fullScreen.push_back(newFullScreen[ix]);
+			for (ix = 0; ix < newFiles.size(); ix++) {
+			  std::cout << "?==?";
+			  files.push_back(newFiles[ix]);
+			  fullScreen.push_back(newFullScreen[ix]);
 			}
 		}
-		//vector<ofFile> newFiles;
-		//vector<bool> newFullScreen;
-
-		//newFiles.clear;
-		//newFullScreen.clear;
-
-
 	}
 }
 
