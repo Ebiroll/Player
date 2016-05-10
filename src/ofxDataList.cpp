@@ -31,7 +31,7 @@ void ofxDataList::setup(int x, int y, int w , int h,int numDisplayRows, int numD
     setActive(true);
 
 
-    timer.setup( 5000 ) ;
+    timer.setup( 15000 ) ;
     timer.start( true ) ;
     
     ofAddListener( timer.TIMER_COMPLETE , this, &ofxDataList::timerCompleteHandler ) ;
@@ -324,7 +324,7 @@ void ofxDataList::draw()
                     //ofBackground(ofColor::lightGray);
                 }
 
-                if (numCols+1 > j) {
+                if (numRows+1 > j) {
                     ofDrawRectRounded(0,  cellHeight * j , width, cellHeight, 10);
                     ofSetColor(255);
                     //ucFont.drawString(linesForDisplay[j], 60, 190 + height * j);
@@ -336,7 +336,18 @@ void ofxDataList::draw()
                     float cy1 = (r + 1) * cellHeight;
                     float cx = c * cellWidth;
                     float cy = r * cellHeight;
-                    ofSetColor(255);
+
+		    if (c>0)
+		    {
+		      cx=cx+cellWidth*0.5;
+		    }
+		    
+		    if (r % 2 == 0) {
+		      //ofSetColor(ofColor(40, 40, 40));
+		      ofSetColor(255);
+		     } else {
+		      ofSetColor(0);
+		     }
                     //ofNoFill();
                     float px=cx + 8;
                     float py= cy + cellHeight/2 - 1;

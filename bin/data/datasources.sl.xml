@@ -19,12 +19,17 @@
 <entry key="data.page.interval">60</entry>
 <entry key="data.interval">15</entry>
 
+
 <entry key="data2.url">http://api.sl.se/api2/realtimedepartures.xml?key=245e126ccbf0451cbca8d3fcc428b0b9&amp;siteid=9702&amp;timewindow=20</entry>
 <entry key="data2.root">//ResponseOfDepartures//ResponseData//Trains</entry>
 <entry key="data2.row">Train</entry>
 <entry key="data2.columns">platform:tcode:scheduledep:destination</entry>
 <entry key="data2.status_attributes">status1</entry>
-
+<!--
+<entry key="data2.url">file:data/traindata.xml</entry>
+<entry key="data2.root">DataList</entry>
+<entry key="data2.row">schedules</entry>
+-->
 <entry key="weatherdata.url">/weatherdata/DefaultWidgetData.xml</entry>
 <entry key="worldtime.data.url">file:../data/worldtime_data.xml</entry>
 <entry key="scrolltext.url">file:../conf/MessageBoard.txt</entry>
